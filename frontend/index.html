@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Madhur Gahlot  Portfolio</title>
+  <meta name="description" content="Portfolio of Madhur Gahlot — AI/ML And Backend Developer" />
+  
+  <!-- Favicon -->
+   <link rel="icon" type="image/jpg" href="/icon.jpg" /> 
+   <!-- <link rel="icon" type="image/png" href="/logo.png" /> -->
+ 
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-brand-50 dark:bg-brand-950 text-brand-900 dark:text-brand-100 font-sans selection:bg-brand-900 selection:text-brand-50 dark:selection:bg-brand-100 dark:selection:text-brand-950 transition-colors duration-300 antialiased">
+  
+  <!-- Header / Navigation Bar -->
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 py-6 px-6 md:px-12 backdrop-blur-md bg-brand-50/80 dark:bg-brand-950/80 border-b border-brand-200/50 dark:border-brand-800/40">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <!-- Site Logo / Branding -->
+      <a href="/" class="group flex items-center gap-3">
+        <span class="font-serif text-2xl md:text-3xl font-semibold tracking-wider text-brand-950 dark:text-brand-50 group-hover:opacity-80 transition-opacity">MADHUR GAHLOT</span>
+        <span class="text-xs uppercase tracking-ultra font-sans text-brand-500 hidden sm:inline-block border-l border-brand-300 dark:border-brand-700 pl-3">PORTFOLIO</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center space-x-10 text-xs tracking-ultra uppercase font-medium">
+        <a href="#work" class="hover:text-brand-500 transition-colors">Work</a>
+        <a href="#about" class="hover:text-brand-500 transition-colors">About & Services</a>
+        <a href="#Skills" class="hover:text-brand-500 transition-colors">Skills</a>
+        <a href="#contact" class="hover:text-brand-500 transition-colors">Contact</a>
+         <a href="#certificate" class="hover:text-brand-500 transition-colors">CertiFicate<a> 
+      </nav>
+
+      <!-- Right Controls: Theme Toggle & Contact Button -->
+      <div class="flex items-center space-x-4">
+        <!-- Dark Mode Toggle Button -->
+        <button id="theme-toggle" type="button" aria-label="Toggle Theme" class="p-2.5 rounded-full border border-brand-300 dark:border-brand-700 hover:bg-brand-200/50 dark:hover:bg-brand-800/50 transition-colors">
+          <!-- Sun Icon (Dark Mode) -->
+          <svg id="theme-icon-sun" class="w-4 h-4 hidden dark:block text-brand-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <!-- Moon Icon (Light Mode) -->
+          <svg id="theme-icon-moon" class="w-4 h-4 block dark:hidden text-brand-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+
+       <!-- <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-5 py-2 text-xs uppercase tracking-widest font-semibold border border-brand-900 dark:border-brand-100 hover:bg-brand-900 hover:text-brand-50 dark:hover:bg-brand-50 dark:hover:text-brand-950 transition-all duration-300">
+          Get in Touch
+        </a> -->
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-toggle" type="button" aria-label="Open Mobile Menu" class="md:hidden p-2.5 rounded-lg border border-brand-300 dark:border-brand-700">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-50 bg-brand-950/95 backdrop-blur-xl text-brand-50 flex flex-col justify-between p-8 transform translate-x-full transition-transform duration-300 md:hidden">
+    <div class="flex items-center justify-between">
+      <span class="font-serif text-2xl font-semibold tracking-wider">Portfolio</span>
+      <button id="mobile-menu-close" type="button" class="p-2 rounded-full border border-brand-700">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <nav class="flex flex-col space-y-8 font-serif text-3xl italic">
+      <a href="#work" class="mobile-nav-link hover:text-brand-400">01. Selected Works</a>
+      <a href="#about" class="mobile-nav-link hover:text-brand-400">02. About & Services</a>
+      <a href="#Skills" class="mobile-nav-link hover:text-brand-400">03. Skills</a>
+      <a href="#contact" class="mobile-nav-link hover:text-brand-400">04. Contact </a>
+    </nav>
+    <div class="border-t border-brand-800 pt-6 text-xs text-brand-400 tracking-wider">
+      <p>  </p>
+      <p class="mt-1">236201126@gkv.ac.in</p>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen pt-36 pb-20 px-6 md:px-12 flex flex-col justify-between relative overflow-hidden">
+    <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-end my-auto">
+      
+      <!-- Big Editorial Headline -->
+      <div class="lg:col-span-8 space-y-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 text-[11px] uppercase tracking-ultra bg-brand-200/60 dark:bg-brand-900/60 border border-brand-300/50 dark:border-brand-800/50 rounded-full text-brand-700 dark:text-brand-300">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Available for AI/ML And Backend Development
+        </div>
+        
+        <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal leading-[1.08] tracking-tight">
+          Visual Direction, <br />
+          <span class="italic font-light opacity-90">Editorial Systems</span> &amp; <br />
+          Spatial Curation.
+        </h1>
+
+        <p class="max-w-xl text-base md:text-lg text-brand-600 dark:text-brand-300 leading-relaxed font-light">
+          I'm Madhur Gahlot, a Computer Science Engineering student focused on Artificial Intelligence, Machine Learning, backend development, and software engineering. I build practical applications that combine intelligent systems, APIs, databases, and modern software technologies.
+        </p>
+      </div>
+
+      <!-- Hero Callout & Interactive Badge -->
+      <div class="lg:col-span-4 flex flex-col justify-between space-y-8 border-l border-brand-300/60 dark:border-brand-800/60 pl-6 md:pl-8">
+        <div class="space-y-4">
+          <span class="text-xs uppercase tracking-ultra text-brand-400">Featured Focus</span>
+          <p class="text-sm text-brand-700 dark:text-brand-200 font-serif italic">
+            Building intelligent and practical software systems by combining AI, backend engineering, databases, and modern development tools.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-4 pt-4">
+          <a href="#work" class="px-7 py-3.5 bg-brand-950 text-brand-50 dark:bg-brand-50 dark:text-brand-950 text-xs uppercase tracking-widest font-semibold hover:opacity-90 transition-opacity">
+            Explore Projects
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="max-w-7xl mx-auto w-full pt-12 flex justify-between items-center text-xs tracking-ultra uppercase text-brand-500 border-t border-brand-200 dark:border-brand-900">
+      <span>Scroll to Discover</span>
+      <div class="flex items-center gap-2">
+        <span class="w-8 h-[1px] bg-brand-400"></span>
+        <span>01 / 04</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Section: Selected Works  -->
+  <section id="work" class="py-24 px-6 md:px-12 border-t border-brand-200/80 dark:border-brand-900/80">
+    <div class="max-w-7xl mx-auto">
+      
+      <!-- Work Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        <div>
+          <span class="text-xs uppercase tracking-ultra text-brand-500">Portfolio</span>
+          <h2 class="font-serif text-3xl md:text-5xl font-normal mt-2">Selected Works</h2>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div id="category-filters" class="flex flex-wrap gap-2 md:gap-3 text-xs tracking-widest uppercase font-medium">
+          <!-- Dynamic Filter Buttons loaded via JS -->
+          <span class="text-brand-400 text-xs">Loading categories...</span>
+        </div>
+      </div>
+
+      <!-- Projects Grid Container -->
+      <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-12 min-h-[400px]">
+        <!-- Dynamic project cards rendered here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Detail Modal -->
+  <div id="project-modal" class="fixed inset-0 z-50 bg-brand-950/90 backdrop-blur-md hidden items-center justify-center p-4 md:p-10 overflow-y-auto">
+    <div class="bg-brand-50 dark:bg-brand-900 border border-brand-200 dark:border-brand-800 rounded-none max-w-5xl w-full max-h-[90vh] overflow-y-auto relative shadow-2xl transition-all my-auto">
+      
+      <!-- Modal Sticky Header -->
+      <div class="sticky top-0 right-0 z-20 flex items-center justify-between p-6 bg-brand-50/90 dark:bg-brand-900/90 backdrop-blur-sm border-b border-brand-200 dark:border-brand-800">
+        <div>
+          <span id="modal-category" class="text-xs uppercase tracking-ultra text-brand-500 font-semibold">Category</span>
+          <h3 id="modal-title" class="font-serif text-2xl md:text-3xl font-semibold">Project Title</h3>
+        </div>
+        <button id="modal-close" type="button" class="p-2 border border-brand-300 dark:border-brand-700 hover:bg-brand-200 dark:hover:bg-brand-800 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body Content -->
+      <div class="p-6 md:p-10 space-y-10">
+        
+        <!-- Metadata Specs Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 py-6 border-y border-brand-200 dark:border-brand-800 text-xs tracking-wider uppercase">
+          <div>
+            <span class="text-brand-400 block mb-1">Client</span>
+            <span id="modal-client" class="font-medium text-brand-900 dark:text-brand-100">Client Name</span>
+          </div>
+          <div>
+            <span class="text-brand-400 block mb-1">Role</span>
+            <span id="modal-role" class="font-medium text-brand-900 dark:text-brand-100">Role Title</span>
+          </div>
+          <div>
+            <span class="text-brand-400 block mb-1">Year</span>
+            <span id="modal-year" class="font-medium text-brand-900 dark:text-brand-100">2026</span>
+          </div>
+          <div>
+            <span class="text-brand-400 block mb-1">Category</span>
+            <span id="modal-cat-tag" class="font-medium text-brand-900 dark:text-brand-100">Editorial</span>
+          </div>
+        </div>
+         
+        
+        <!-- Description Narrative -->
+        <div>
+          <h4 class="text-xs uppercase tracking-ultra text-brand-400 mb-3">Project Narrative</h4>
+          <p id="modal-description" class="text-base md:text-lg text-brand-700 dark:text-brand-300 leading-relaxed font-light">
+            Description goes here...
+          </p>
+        </div>
+
+        <!-- Project Links -->
+<div class="flex flex-wrap gap-4 pt-2">
+
+  <a
+    id="modal-github" href="#" target="_blank"  rel="noopener noreferrer"
+   class="inline-flex items-center gap-2 px-6 py-3
+           bg-brand-950 text-brand-50
+           dark:bg-brand-50 dark:text-brand-950
+           text-xs uppercase tracking-widest font-semibold
+           hover:opacity-80 transition-all"
+  >
+  <img src="github.webp" alt="GitHub" class="w-5 h-5 object-contain">
+    GitHub
+    <span>↗</span>
+  </a>
+
+  <a
+    id="modal-live" href="#" target="_blank"  rel="noopener noreferrer"
+    class="inline-flex items-center gap-2 px-6 py-3
+           bg-brand-950 text-brand-50
+           dark:bg-brand-50 dark:text-brand-950
+           text-xs uppercase tracking-widest font-semibold
+           hover:opacity-80 transition-al"
+  >
+    Live Project
+    <span>↗</span>
+  </a>
+
+</div>
+
+        <!-- Key Highlights -->
+        <div id="modal-details-container" class="space-y-2">
+          <h4 class="text-xs uppercase tracking-ultra text-brand-400 mb-3">Scope &amp; Impact</h4>
+          <ul id="modal-details-list" class="list-disc list-inside text-sm text-brand-600 dark:text-brand-400 space-y-2">
+          </ul>
+        </div>
+
+        <!-- Image Gallery Showcase -->
+        <div>
+          <h4 class="text-xs uppercase tracking-ultra text-brand-400 mb-6">Gallery Overview</h4>
+          <div id="modal-gallery" class="space-y-8">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About & Services Section -->
+  <section id="about" class="py-24 px-6 md:px-12 bg-brand-100/50 dark:bg-brand-900/30 border-t border-brand-200/80 dark:border-brand-900/80">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      
+      <!-- Bio Image / Visual Accent -->
+      <div class="lg:col-span-5 relative">
+        <div class="aspect-[3/4] overflow-hidden relative border border-brand-300 dark:border-brand-800">
+          <img src="ph.jpg" alt="" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+        </div>
+        <div class="absolute -bottom-6 -right-6 bg-brand-950 text-brand-50 dark:bg-brand-50 dark:text-brand-950 p-6 hidden sm:block border border-brand-800">
+          <p class="font-serif text-2xl italic">"Simplicity is the ultimate sophistication."</p>
+        </div>
+      </div>
+
+      <!-- About Info & Capabilities -->
+      <div class="lg:col-span-7 space-y-8">
+        <div>
+          <span class="text-xs uppercase tracking-ultra text-brand-500">About Myself</span>
+          <h2 class="font-serif text-3xl md:text-5xl font-normal mt-2 leading-tight">
+            Building practical software with AI, backend engineering & problem solving.
+          </h2>
+        </div>
+
+        <p class="text-base md:text-lg text-brand-600 dark:text-brand-300 leading-relaxed font-light">
+          I am a Computer Science Engineering student with a strong interest in Artificial Intelligence, Machine Learning, backend development, and software engineering. My projects focus on solving practical problems through APIs, databases, AI models, authentication systems, and application architecture. I enjoy turning ideas into functional software and continuously improving my skills through hands-on projects.
+
+        </p>
+
+        <!-- Capabilities List Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">
+          <div class="space-y-3 border-l border-brand-300 dark:border-brand-700 pl-4">
+            <h3 class="font-serif text-xl font-medium">AI & Machine Learning</h3>
+            <p class="text-xs text-brand-500 dark:text-brand-400 leading-relaxed">
+             Developing AI-powered applications using machine learning, NLP, embeddings, OCR, semantic similarity, and generative AI technologies.
+            </p>
+          </div>
+          <div class="space-y-3 border-l border-brand-300 dark:border-brand-700 pl-4">
+            <h3 class="font-serif text-xl font-medium">C++  &amp; Systems</h3>
+            <p class="text-xs text-brand-500 dark:text-brand-400 leading-relaxed">
+              Developing C++ applications and graphical simulations with a focus on programming fundamentals, algorithms, real-time systems, and Raylib
+            </p>
+          </div>
+          <div class="space-y-3 border-l border-brand-300 dark:border-brand-700 pl-4">
+            <h3 class="font-serif text-xl font-medium">Databases &amp; Cloud</h3>
+            <p class="text-xs text-brand-500 dark:text-brand-400 leading-relaxed">
+              Working with MySQL, PostgreSQL, Firebase Firestore, authentication, cloud deployment, API integration, and secure data management.
+            </p>
+          </div>
+          <div class="space-y-3 border-l border-brand-300 dark:border-brand-700 pl-4">
+            <h3 class="font-serif text-xl font-medium">Backend Development</h3>
+            <p class="text-xs text-brand-500 dark:text-brand-400 leading-relaxed">
+             Building REST APIs and backend systems using Python, FastAPI, Flask, authentication, databases, and structured application architecture.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients Section -->
+  <section id="Skills" class="py-20 px-6 md:px-12 border-t border-brand-200/80 dark:border-brand-900/80">
+    <div class="max-w-7xl mx-auto space-y-12">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs uppercase tracking-ultra text-brand-500">
+    Technologies
+</span>
+          <h2 class="font-serif text-2xl md:text-3xl font-normal mt-1">
+    Tools & Technologies
+</h2>
+        </div>
+        <span class="text-xs text-brand-400 tracking-wider"> PRESENT</span>
+      </div>
+
+      <!-- Name Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 items-center text-center opacity-75">
+        <div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+        <a  class="flex items-center justify-center gap-2">
+    <img src="/Python.webp" alt="PYTHON" class="w-8 h-8 object-contain">
+    <span>PYTHON</span>
+</a>
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+    <a  class="flex items-center justify-center gap-2">
+    <img src="/cpp_logo.png" alt="Cpp" class="w-8 h-8 object-contain">
+    <span>CPP</span>
+</a>
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+ <a  class="flex items-center justify-center gap-2">
+    <img src="/favicon.png" alt="PostgreSQL" class="w-8 h-8 object-contain">
+    <span>FASTAPI</span>
+</a>
+
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+  <a  class="flex items-center justify-center gap-2">
+    <img  src="/mysql.png" alt="Mysql" class ="w-8 h-8" object-contain>
+   <span>  MYSQL </span> 
+</a>
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+ <a  class="flex items-center justify-center gap-2">
+    <img src="/Logo_PostgreSQL.png" alt="PostgreSQL" class="w-8 h-8 object-contain">
+    <span>POSTGRES </span>
+</a>
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+    AI / ML
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+   <a  class="flex items-center justify-center gap-2">
+    <img src="/github.webp" alt="github" class="w-8 h-8 object-contain">
+    <span>GITHUB </span>
+</a>
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+       <a  class="flex items-center justify-center gap-2">
+    <img src="/pandaslogo.png" alt="github" class="w-8 h-8 object-contain">
+    <span>PANDAS </span>
+</a>
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+           <a  class="flex items-center justify-center gap-2">
+    <img src="/matplotlib.png" alt="MATPLOTLIB" class="w-8 h-8 object-contain">
+    <span> MATPLOT </span>
+</a>
+</div>
+
+<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
+           <a  class="flex items-center justify-center gap-2">
+    <img src="/raylib-logo.webp" alt="MATPLOTLIB" class="w-8 h-8 object-contain">
+    <span>RAYLIB </span>
+</a>
+</div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section (FastAPI Backend Form Integration) -->
+  <section id="contact" class="py-24 px-6 md:px-12 bg-brand-900 text-brand-50 dark:bg-brand-950 border-t border-brand-800 relative">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
+      
+      <!-- Contact Info -->
+      <div class="lg:col-span-5 space-y-8">
+        <div>
+          <span class="text-xs uppercase tracking-ultra text-brand-400">Initiate Conversation</span>
+          <h2 class="font-serif text-4xl md:text-6xl font-normal mt-3 leading-tight">
+            Lets create something Impactfull.
+          </h2>
+        </div>
+
+        <p class="text-base text-brand-300 leading-relaxed font-light">
+         I'm open to opportunities involving AI/ML, backend development, software engineering, and collaborative technical projects. If you have an interesting idea, 
+         internship opportunity, or project to discuss, feel free to get in touch.
+        </p>
+
+        <div class="space-y-4 text-sm font-light pt-4 border-t border-brand-800">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-brand-400 block mb-1">Direct Email</span>
+            <a href="mailto:madhurgahlot20@gmail.com" class="text-lg hover:text-brand-300 underline underline-offset-4">236301126@GKV.AC.IN</a>
+          </div>
+         <!--<div>
+            <span class="text-xs uppercase tracking-widest text-brand-400 block mb-1">Studios</span>
+            <p class="text-brand-300"></p>
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="lg:col-span-7 bg-brand-950/60 dark:bg-brand-900/60 border border-brand-800 p-8 md:p-12 relative">
+        
+        <!-- Submission Status Banner -->
+        <div id="contact-status" class="hidden mb-6 p-4 border text-xs tracking-wider uppercase transition-all"></div>
+
+        <form id="contact-form" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-xs uppercase tracking-widest text-brand-400 mb-2">Your Name *</label>
+              <input type="text" id="name" required placeholder="e.g. Elena Rostova" class="w-full bg-brand-900/80 border border-brand-800 px-4 py-3 text-sm text-brand-100 placeholder-brand-600 focus:outline-none focus:border-brand-300 transition-colors" />
+            </div>
+
+            <div>
+              <label for="email" class="block text-xs uppercase tracking-widest text-brand-400 mb-2">Email Address *</label>
+              <input type="email" id="email" required placeholder="e.g. elena@studio.com" class="w-full bg-brand-900/80 border border-brand-800 px-4 py-3 text-sm text-brand-100 placeholder-brand-600 focus:outline-none focus:border-brand-300 transition-colors" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="service" class="block text-xs uppercase tracking-widest text-brand-400 mb-2">Primary Service</label>
+              <select id="service" class="w-full bg-brand-900/80 border border-brand-800 px-4 py-3 text-sm text-brand-100 focus:outline-none focus:border-brand-300 transition-colors">
+                <option value="Creative Direction">Creative Direction &amp; Styling</option>
+                <option value="AI/ML"> AI &amp; Machine Learing</option>
+                <option value=" Backend ">Backend  &amp; Intergration</option>
+                <option value="Cpp">Cpp & RAYLIB(Graphics) </option>
+                <option value="General Inquiry">General Inquiry</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="budget" class="block text-xs uppercase tracking-widest text-brand-400 mb-2">Project Budget</label>
+              <select id="budget" class="w-full bg-brand-900/80 border border-brand-800 px-4 py-3 text-sm text-brand-100 focus:outline-none focus:border-brand-300 transition-colors">
+                <option value="10k - 25k">10,000 - 25,000</option>
+                <option value="25k - 50k">25,000 - 50,000</option>
+                <option value="50k+">50,000+</option>
+                <option value="Flexible">Flexible / Retainer</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="message" class="block text-xs uppercase tracking-widest text-brand-400 mb-2">Project Details &amp; Timeline *</label>
+            <textarea id="message" rows="5" required placeholder="Tell us about your brand vision, scope, desired timeline, and goals..." class="w-full bg-brand-900/80 
+            border border-brand-800 px-4 py-3 text-sm text-brand-100 placeholder-brand-600 focus:outline-none focus:border-brand-300 transition-colors"></textarea>
+          </div>
+
+          <button type="submit" id="submit-btn" class="w-full py-4 bg-brand-50 text-brand-950 text-xs uppercase tracking-widest font-semibold hover:bg-brand-200 transition-all flex items-center justify-center gap-2">
+            <span>Send Project Inquiry</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 md:px-12 bg-brand-950 text-brand-500 border-t border-brand-900 text-xs uppercase tracking-widest">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div>
+        <p>&copy; 2026 DEVELOPED BY MADHUR GAHLOT </p>
+          
+        </p>
+        <p class="mt-1">236301126@GKV.AC.IN</p>
+      </div>
+      <div class="flex items-center space-x-6">
+        <a href="MGUR.pdf" class="hover:text-brand-200 transition-colors" target="_blank">Resume</a>
+        <a href="https://github.com/MadhurGahlot" class="hover:text-brand-200 transition-colors" 
+        target="_blank"  rel="noopener noreferrer">Github</a>
+        <a href="https://www.linkedin.com/in/madhur-gahlot-a9b614298/" class="hover:text-brand-200 transition-colors"
+        target = "_blank"  rel="noopener noreferrer">LinkedIn</a>
+        <a href="madhurgahlotcv.pdf" class="hover:text-brand-200 transition-colors" target="_blank">C V </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

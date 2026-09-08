@@ -1,0 +1,134 @@
+# =========================
+# FRONTEND - Node / Vite
+# =========================
+
+node_modules/
+dist/
+.vite/
+*.local
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+# =========================
+# BACKEND - Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# Keep example environment file
+!.env.example
+
+# Python tools
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# =========================
+# DATABASE
+# =========================
+
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# UPLOADS / GENERATED FILES
+# =========================
+
+backend/uploads/*
+backend/output/*
+backend/temp/*
+backend/outputs/*
+
+# Keep folder structure
+!backend/uploads/.gitkeep
+!backend/output/.gitkeep
+!backend/temp/.gitkeep
+!backend/outputs/.gitkeep
+
+
+# =========================
+# LOGS
+# =========================
+
+*.log
+logs/
+
+
+# =========================
+# IDE / EDITORS
+# =========================
+
+.vscode/
+.idea/
+
+# VS Code settings
+*.code-workspace
+
+# =========================
+# OPERATING SYSTEM
+# =========================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+
+# =========================
+# BUILD / CACHE
+# =========================
+
+.cache/
+.tmp/
+temp/
+
+# =========================
+# SECRETS / CREDENTIALS
+# =========================
+
+*.pem
+*.key
+*.crt
+
+credentials.json
+service-account.json
+firebase-adminsdk*.json
+
+# Google Cloud / Firebase secrets
+google-services.json
+
+# =========================
+# BACKUP FILES
+# =========================
+
+*.bak
+*.backup
+*.old
