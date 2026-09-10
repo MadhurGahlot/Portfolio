@@ -1,16 +1,69 @@
 // frontend/src/main.js
 import './style.css';
-import { fetchCategories, fetchProjects, fetchProjectBySlug, submitContact } from './api.js';
+import { fetchCategories, fetchProjects, fetchProjectBySlug, submitContact ,fetchCertificates,} 
+from './api.js';
 
 // State management
 let currentCategory = 'all';
 let projectsData = [];
+
+// Always start at the top when the page is reloaded
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+window.addEventListener('beforeunload', () => {
+  window.scrollTo(0, 0);
+});
 
 // DOM Elements
 const categoryFiltersContainer = document.getElementById('category-filters');
 const projectsContainer = document.getElementById('projects-container');
 const projectModal = document.getElementById('project-modal');
 const modalCloseBtn = document.getElementById('modal-close');
+
+
+/**
+ * Load images only when they are near the viewport
+ */
+function initLazyImages() {
+  const images = document.querySelectorAll('img[data-src]');
+
+  if (!('IntersectionObserver' in window)) {
+    images.forEach(img => {
+      img.src = img.dataset.src;
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const img = entry.target;
+      const src = img.dataset.src;
+
+      if (src) {
+        img.src = src;
+        img.removeAttribute('data-src');
+      }
+
+      observer.unobserve(img);
+    });
+  }, {
+    rootMargin: '100px 0px'
+  });
+
+  images.forEach(img => observer.observe(img));
+}
+
+ /* document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initLazyImages();
+  loadCategories();
+  loadProjects(currentCategory);
+}); */
+
 
 // Theme Toggle Setup
 const themeToggleBtn = document.getElementById('theme-toggle');
@@ -93,6 +146,7 @@ async function loadCategories() {
  */
 async function loadProjects(category = 'all') {
   if (!projectsContainer) return;
+ 
 
   projectsContainer.innerHTML = `
     <div class="col-span-full py-16 text-center text-brand-500 text-sm tracking-widest uppercase animate-pulse">
@@ -179,6 +233,8 @@ async function loadProjects(category = 'all') {
 async function openProjectModal(slug) {
   const project = await fetchProjectBySlug(slug);
   if (!project) return;
+  // Remember the opened project in the URL
+  history.replaceState(null, '', `#work/${slug}`);
 
   // Populate Modal Fields
   document.getElementById('modal-title').textContent = project.title;
@@ -238,6 +294,7 @@ function closeProjectModal() {
     projectModal.classList.add('hidden');
     projectModal.classList.remove('flex');
     document.body.style.overflow = '';
+    history.replaceState(null, '', window.location.pathname + window.location.search);
   }
 }
 
@@ -249,6 +306,109 @@ projectModal?.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeProjectModal();
 });
+
+
+// For Certificate 
+
+async function initCertificateGallery() {
+  const gallery = document.getElementById("certificate-gallery");
+  if (!gallery) return;
+
+  try {
+    const certificates = await fetchCertificates();
+    if (!certificates.length) return;
+
+    const radius = window.innerWidth < 640 ? 260 : 520;
+    const anglePerItem = 360 / certificates.length;
+
+    gallery.innerHTML = certificates
+      .map(
+        (certificate, index) => `
+          <article
+            class="certificate-card"
+            style="--certificate-angle: ${index * anglePerItem}deg; --certificate-radius: ${radius}px;"
+          >
+            <a
+              href="${certificate.credential_url || "#"}"
+              ${certificate.credential_url ? 'target="_blank" rel="noopener noreferrer"' : ""}
+              class="certificate-card-inner"
+            >
+              <img
+                src="${certificate.image}"
+                alt="${certificate.title} certificate"
+                loading="lazy"
+              />
+
+              <div class="certificate-card-content">
+                <p>${certificate.issuer}</p>
+                <h3>${certificate.title}</h3>
+                <span>Issued ${certificate.date}</span>
+              </div>
+            </a>
+          </article>
+        `,
+      )
+      .join("");
+
+    let rotation = 0;
+    let isScrolling = false;
+    let scrollTimer;
+
+    function updateGallery() {
+      gallery.style.setProperty("--gallery-rotation", `${rotation}deg`);
+
+      document.querySelectorAll(".certificate-card").forEach((card, index) => {
+        const itemAngle = index * anglePerItem;
+        const relativeAngle = (itemAngle + (rotation % 360) + 360) % 360;
+        const distance = Math.abs(
+          relativeAngle > 180 ? 360 - relativeAngle : relativeAngle,
+        );
+
+        card.style.opacity = Math.max(0.28, 1 - distance / 180);
+      });
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        isScrolling = true;
+        clearTimeout(scrollTimer);
+
+        const scrollableHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+
+        rotation = scrollableHeight
+          ? (window.scrollY / scrollableHeight) * 360
+          : 0;
+
+        updateGallery();
+
+        scrollTimer = setTimeout(() => {
+          isScrolling = false;
+        }, 180);
+      },
+      { passive: true },
+    );
+
+    function animate() {
+      if (!isScrolling) {
+        rotation += 0.18;
+        updateGallery();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    updateGallery();
+    animate();
+  } catch (error) {
+    gallery.innerHTML = `
+      <p class="text-sm text-brand-500 text-center">
+        Certificates could not be loaded.
+      </p>
+    `;
+  }
+}
 
 /**
  * Contact Form Submission Handling with FastAPI backend
@@ -302,8 +462,41 @@ contactForm?.addEventListener('submit', async (e) => {
 });
 
 // App Initialization
-document.addEventListener('DOMContentLoaded', () => {
+//document.addEventListener('DOMContentLoaded', () => {
+ // initTheme();
+ // loadCategories();
+  //loadProjects(currentCategory);
+//});
+
+// Re-open the project after page reload
+async function restoreProjectFromURL() {
+  const hash = window.location.hash;
+
+  if (hash.startsWith('#work/')) {
+    const slug = hash.substring('#work/'.length);
+
+    if (slug) {
+      await openProjectModal(slug);
+    }
+  }
+}
+
+let appStarted = false;
+
+async function initApp() {
+  if (appStarted) return;
+  appStarted = true;
+
   initTheme();
-  loadCategories();
-  loadProjects(currentCategory);
-});
+  initLazyImages();
+
+  await Promise.all([
+    loadCategories(),
+    loadProjects(currentCategory),
+    initCertificateGallery(),
+  ]);
+
+  await restoreProjectFromURL();
+}
+
+document.addEventListener("DOMContentLoaded", initApp, { once: true });

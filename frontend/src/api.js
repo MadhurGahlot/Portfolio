@@ -79,3 +79,14 @@ export async function submitContact(formData) {
     throw error;
   }
 }
+
+
+export async function fetchCertificates() {
+  const response = await fetch(`${API_BASE_URL}/certificates`);
+
+  if (!response.ok) {
+    throw new Error(`Certificates request failed: ${response.status}`);
+  }
+
+  return response.json();
+}

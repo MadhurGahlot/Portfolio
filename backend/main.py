@@ -39,3 +39,9 @@ def developerdetails():
             "college" : "GKV",
             "Role" : "Backend developer"
             }
+
+from data import CERTIFICATES
+
+@app.get("/api/certificates")
+def get_certificates():
+    return CERTIFICATES

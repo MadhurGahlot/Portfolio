@@ -132,3 +132,6 @@ google-services.json
 *.bak
 *.backup
 *.old
+
+
+mintvenv/

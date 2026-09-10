@@ -49,3 +49,118 @@
 .aspect-square {
   aspect-ratio: 1 / 1;
 }
+
+.certificate-section {
+  height: 450vh;
+  background-color: #fafaf9;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(120, 113, 108, 0.16),
+    transparent 42%
+  );
+}
+
+.dark .certificate-section {
+  background-color: #0c0a09;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(120, 113, 108, 0.18),
+    transparent 42%
+  );
+}
+
+.certificate-heading {
+  position: absolute;
+  top: 5rem;
+  z-index: 10;
+}
+
+.certificate-gallery {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+}
+
+.certificate-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(500px, 84vw);
+  height: min(340px, 58vw);
+  transform:
+    translate(-50%, -50%)
+    rotateY(calc(var(--certificate-angle) + var(--gallery-rotation)))
+    translateZ(var(--certificate-radius));
+  transform-style: preserve-3d;
+  transition: opacity 0.25s linear;
+  will-change: transform, opacity;
+}
+
+.certificate-card-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 1rem;
+  background: #0f172a;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s ease;
+  backface-visibility: hidden;
+}
+
+.certificate-card-inner:hover {
+  transform: scale(1.04);
+}
+
+.certificate-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.certificate-card-content {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 4.5rem 1.5rem 1.5rem;
+  color: white;
+  background: linear-gradient(to top, rgba(2, 6, 23, 0.96), transparent);
+}
+
+.certificate-card-content p {
+  margin-bottom: 0.35rem;
+  color: #67e8f9;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.certificate-card-content h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.certificate-card-content span {
+  display: block;
+  margin-top: 0.35rem;
+  color: #cbd5e1;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .certificate-heading {
+    top: 4rem;
+  }
+
+  .certificate-card {
+    height: min(270px, 60vw);
+  }
+}

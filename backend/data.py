@@ -55,7 +55,7 @@ PORTFOLIO_PROJECTS = [
         "year": "2026",
         "client": "Academic Project",
         "role": "Backend & AI Developer",
-        "hero_image": "/Gradebook/gd1.png",
+        "hero_image": "/Gradebook/gd1.webp",
         "cover_aspect": "wide",
         "featured": True,
         "github_url": "https://github.com/MadhurGahlot/BCE-P663",
@@ -74,36 +74,44 @@ PORTFOLIO_PROJECTS = [
         "Designed the system with separate backend, frontend, AI, similarity-engine and utility modules."
         ],
         "gallery": [
-                 "Gradebook/gd2.png",
-                 "Gradebook/gd3.png",
-                 "Gradebook/gd4.png",
-                 "Gradebook/gd5.png"
+                 "Gradebook/gd2.webp",
+                 "Gradebook/gd3.webp",
+                 "Gradebook/gd4.webp",
+                 "Gradebook/gd5.webp"
             
         ]
     },
     {
         "id": "3",
-        "slug": "kinetic-architecture",
-        "title": "Form & Void",
-        "subtitle": "Architectural Photography Series",
-        "category": "photography",
-        "category_name": "Photography",
-        "year": "2025",
-        "client": "Architectural Digest",
-        "role": "Lead Photographer",
-        "hero_image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200",
+        "slug": "eeye",
+        "title": "EEYE",
+        "subtitle": "EEYE — Software-Based  Radar",
+        "category": "Cpp",
+        "category_name": "C++ & Graphics",
+        "year": "2026",
+        "client": "College Project",
+        "role": "C++ & Computer Graphics Developer",
+        "hero_image": "/EEye/eeye1.png",
         "cover_aspect": "square",
         "featured": True,
-        "github_url": "/",
+        "github_url": "https://github.com/MadhurGahlot/EEYE",
         "live_url": "/",
-        "description": "A photographic essay investigating light modulation and geometric shadows across modern residential sanctuaries in Tokyo and Kyoto.",
+        "description": "EEYE (Electronic Eye) is a software-based air-surveillance radar "
+        "simulation developed using C++ and Raylib. The project recreates "
+        "the visual interface and workflow of a radar command center "
+        "through real-time graphics and modular software architecture.",
         "details": [
-            "Shot on 8x10 large format analog film to capture micro-grain cement textures.",
-            "Featured at Venice Architecture Biennale 2025.",
-            "Permanent installation at Kyoto Modern Art Pavilion."
+             "Built the radar engine using C++ and Raylib.",
+        "Implemented a real-time radar sweep animation.",
+        "Designed radar grid and range rings for spatial visualization.",
+        "Created a military-style radar command-center interface.",
+        "Developed a modular C++ project architecture.",
+        "Currently expanding the simulation with target visualization,"
+        " radar animations and dynamic status information."
         ],
         "gallery": [
-            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200",
+            "/EEye/eeye1.png",
+            ""
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200",
             "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1200"
         ]
@@ -182,6 +190,62 @@ PORTFOLIO_PROJECTS = [
             "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&q=80&w=1200"
         ]
     }
+]
+
+CERTIFICATES = [
+    {
+        "id": "Pandas",
+        "title": "Pandas",
+        "issuer": "Kaggle",
+        "date": "2026",
+        "image": "https://media.licdn.com/dms/image/v2/D5622AQG_a328kv9idQ/feedshare-image-high-res/B56Z_cCkIDHIAU-/0/1786103088346?e=1790812800&v=beta&t=uVaAZjwtX10itAykG6_9nO_3nB0YJr9N9SFHJiz3ssA",
+        "credential_url": "https://www.kaggle.com/learn/certification/madhurgahlot/pandas",
+    },
+    {
+        "id": "Mysql",
+        "title": "Problem Solving Using the MYSQL",
+        "issuer": "HackerRank",
+        "date": "2025",
+        "image": "https://media.licdn.com/dms/image/v2/D562DAQHxWPBMlQe_uQ/profile-treasury-document-images_1280/B56ZrOh_RVI4AU-/1/1764401622163?e=1790208000&v=beta&t=BMt0sGDmORD42YDciBgdSOLGvJ2HC-QZ2U_G8_d8xM4",
+        "credential_url": "https://www.hackerrank.com/certificates/5d589d893ce9",
+    },
+    {
+        "id": "cpp-programming",
+        "title": "C++ Programming",
+        "issuer": "Codsoft",
+        "date": "2025",
+        "image": "https://media.licdn.com/dms/image/v2/D562DAQFgohDjR8Szxg/profile-treasury-image-shrink_8192_8192/B56ZrOkfzfIYAg-/0/1764402266571?e=1789657200&v=beta&t=e6OxNulq7paKj0IfsjqQ1hvq8QKj6LEMXWQKyIWZqKk",
+        "credential_url": "https://drive.google.com/file/d/1ZxCA0XTTcv8puXZtP6kZA4I-7Qs8lV1Y/view",
+    },
+    {
+        "id": "Python",
+        "title": "Problem solving using python",
+        "issuer": "Hackerrank",
+        "date": "2025",
+        "image": "https://media.licdn.com/dms/image/v2/D562DAQHw0aBERED2cA/profile-treasury-document-images_1280/B56ZrOjJisJ8AU-/1/1764401925862?e=1790208000&v=beta&t=H7-BwGXKvOxzXK1WVidPathDBx1zmbhceTYlHWfPKb0",
+        "credential_url": "https://www.hackerrank.com/certificates/1869569b0482",
+    },
+
+    {
+        "id": "NPTEL",
+        "title": "Computer Architecture",
+        "issuer": "NPTEL",
+        "date": "NOV 2024",
+        "image": "https://media.licdn.com/dms/image/v2/D5622AQEnJaytMLOAzw/feedshare-shrink_800/feedshare-shrink_800/0/1732463329747?e=1790812800&v=beta&t=BT451viOOBkN9S2YRoHUR115ViXbzmDOAX6WmmbGqgw",
+        "credential_url": "",
+
+    },
+
+    {
+        "id": "Machine Learing",
+        "title": "Machine Learning Using Python",
+        "issuer": "Simplilearn",
+        "date": "19 Jan 2026",
+        "image": "https://media.licdn.com/dms/image/v2/D561FAQG08CR2cQRwEg/feedshare-document-images_1920/B56ZvXHm1HKwAs-/1/1768840656223?e=1790208000&v=beta&t=ukAjEfG7IdLnWpiFxDSvlrz2dcc7ZTOQvHrOmcC7XUE",
+        "credential_url": "",
+ }
+    
+        
 ]
 
 CONTACT_MESSAGES = []
