@@ -56,15 +56,6 @@ function initLazyImages() {
 
   images.forEach(img => observer.observe(img));
 }
-
- /* document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  initLazyImages();
-  loadCategories();
-  loadProjects(currentCategory);
-}); */
-
-
 // Theme Toggle Setup
 const themeToggleBtn = document.getElementById('theme-toggle');
 
@@ -146,13 +137,6 @@ async function loadCategories() {
  */
 async function loadProjects(category = 'all') {
   if (!projectsContainer) return;
- 
-
-  projectsContainer.innerHTML = `
-    <div class="col-span-full py-16 text-center text-brand-500 text-sm tracking-widest uppercase animate-pulse">
-      Loading Projects from FastAPI...
-    </div>
-  `;
 
   projectsData = await fetchProjects(category);
 
@@ -191,6 +175,7 @@ async function loadProjects(category = 'all') {
           src="${project.hero_image}" 
           alt="${project.title}" 
           loading="lazy"
+          
           class="project-card-image"
         />
 
@@ -276,7 +261,13 @@ if (liveBtn) {
   if (modalGallery && project.gallery) {
     modalGallery.innerHTML = project.gallery.map(imgUrl => `
       <div class="overflow-hidden border border-brand-200 dark:border-brand-800">
-        <img src="${imgUrl}" alt="${project.title} Gallery Image" class="w-full object-cover max-h-[600px]" />
+        <img
+  src="${imgUrl}"
+  alt="${project.title} Gallery Image"
+  loading="lazy"
+  decoding="async"
+  class="w-full object-cover max-h-[600px]"
+/>
       </div>
     `).join('');
   }
@@ -310,98 +301,416 @@ document.addEventListener('keydown', (e) => {
 
 // For Certificate 
 
+// For Certificate & Skills Carousels
+
+function initTechGallery() {
+  const container = document.querySelector(".tech-gallery-container");
+  const gallery = document.getElementById("tech-gallery");
+  if (!gallery) return;
+
+  const cards = gallery.querySelectorAll(".tech-card");
+  if (!cards.length) return;
+
+  // Make sure image sources are loaded from data-src
+  cards.forEach((card) => {
+    const img = card.querySelector("img[data-src]");
+    if (img && img.dataset.src) {
+      img.src = img.dataset.src;
+      img.removeAttribute("data-src");
+    }
+  });
+
+  // MOBILE (< 640px): Non-rotating attractive grid layout
+  if (window.innerWidth < 640) {
+    gallery.style.setProperty("--tech-rotation", "0deg");
+    cards.forEach((card) => {
+      card.style.position = "relative";
+      card.style.top = "auto";
+      card.style.left = "auto";
+      card.style.transform = "none";
+      card.style.opacity = "1";
+    });
+    return;
+  }
+
+  // DESKTOP (>= 640px): 3D Rotating Carousel
+  let radius = 500;
+  let perspective = 1800;
+  let rotation = 0;
+
+  let isDragging = false;
+  let startX = 0;
+  let startRotation = 0;
+  let velocity = 0;
+  let lastX = 0;
+  let lastTime = 0;
+
+  function updateParams() {
+    const w = window.innerWidth;
+    if (w < 1024) {
+      radius = Math.max(280, Math.min(w * 0.42, 380));
+      perspective = 1300;
+    } else {
+      radius = 500;
+      perspective = 1800;
+    }
+
+    gallery.style.setProperty("--tech-perspective", `${perspective}px`);
+    const anglePerItem = 360 / cards.length;
+
+    cards.forEach((card, index) => {
+      card.style.setProperty("--tech-angle", `${index * anglePerItem}deg`);
+      card.style.setProperty("--tech-radius", `${radius}px`);
+    });
+  }
+
+  updateParams();
+  window.addEventListener("resize", updateParams, { passive: true });
+
+  function onPointerDown(e) {
+    isDragging = true;
+    startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    lastX = startX;
+    lastTime = performance.now();
+    startRotation = rotation;
+    velocity = 0;
+  }
+
+  function onPointerMove(e) {
+    if (!isDragging) return;
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const deltaX = clientX - startX;
+    rotation = startRotation + deltaX * 0.25;
+
+    const now = performance.now();
+    const dt = now - lastTime;
+    if (dt > 0) {
+      velocity = ((clientX - lastX) * 0.25) / (dt / 16);
+    }
+    lastX = clientX;
+    lastTime = now;
+  }
+
+  function onPointerUp() {
+    isDragging = false;
+  }
+
+  const dragArea = container || gallery;
+  dragArea.addEventListener("mousedown", onPointerDown);
+  window.addEventListener("mousemove", onPointerMove);
+  window.addEventListener("mouseup", onPointerUp);
+
+  function updateGallery() {
+    gallery.style.setProperty("--tech-rotation", `${rotation}deg`);
+    const anglePerItem = 360 / cards.length;
+
+    cards.forEach((card, index) => {
+      const itemAngle = index * anglePerItem;
+      const totalAngle = (itemAngle + (rotation % 360) + 360) % 360;
+      const rad = (totalAngle * Math.PI) / 180;
+      const cosVal = Math.cos(rad);
+
+      const opacity = Math.max(0.25, (cosVal + 1) / 2);
+      card.style.opacity = opacity.toFixed(2);
+    });
+  }
+
+  function animate() {
+    if (window.innerWidth < 640) return;
+    if (!isDragging) {
+      if (Math.abs(velocity) > 0.01) {
+        rotation += velocity;
+        velocity *= 0.94;
+      } else {
+        rotation += 0.18;
+      }
+    }
+
+    updateGallery();
+    requestAnimationFrame(animate);
+  }
+
+  updateGallery();
+  animate();
+}
+
 async function initCertificateGallery() {
   const gallery = document.getElementById("certificate-gallery");
+  const section = document.getElementById("certificate");
   if (!gallery) return;
 
   try {
     const certificates = await fetchCertificates();
     if (!certificates.length) return;
 
-    const radius = window.innerWidth < 640 ? 260 : 520;
-    const anglePerItem = 360 / certificates.length;
+    // MOBILE (< 640px): Non-rotating attractive horizontal snap slider
+    if (window.innerWidth < 640) {
+      gallery.innerHTML = certificates
+        .map(
+          (certificate) => `
+            <article class="certificate-card">
+              <a
+                href="${certificate.credential_url || "#"}"
+                ${
+                  certificate.credential_url
+                    ? 'target="_blank" rel="noopener noreferrer"'
+                    : 'onclick="event.preventDefault()"'
+                }
+                class="certificate-card-inner"
+              >
+                <img
+                  src="${certificate.image}"
+                  alt="${certificate.title} certificate"
+                  loading="lazy"
+                  decoding="async"
+                />
 
-    gallery.innerHTML = certificates
-      .map(
-        (certificate, index) => `
-          <article
-            class="certificate-card"
-            style="--certificate-angle: ${index * anglePerItem}deg; --certificate-radius: ${radius}px;"
-          >
-            <a
-              href="${certificate.credential_url || "#"}"
-              ${certificate.credential_url ? 'target="_blank" rel="noopener noreferrer"' : ""}
-              class="certificate-card-inner"
-            >
-              <img
-                src="${certificate.image}"
-                alt="${certificate.title} certificate"
-                loading="lazy"
-              />
+                <div class="certificate-card-content">
+                  <p>${certificate.issuer}</p>
+                  <h3>${certificate.title}</h3>
+                  <div class="flex items-center justify-between mt-1">
+                    <span>Issued ${certificate.date}</span>
+                    ${
+                      certificate.credential_url
+                        ? `<span class="text-[10px] text-cyan-400 font-semibold tracking-wider uppercase">Verify ↗</span>`
+                        : ""
+                    }
+                  </div>
+                </div>
+              </a>
+            </article>
+          `
+        )
+        .join("");
 
-              <div class="certificate-card-content">
-                <p>${certificate.issuer}</p>
-                <h3>${certificate.title}</h3>
-                <span>Issued ${certificate.date}</span>
-              </div>
-            </a>
-          </article>
-        `,
-      )
-      .join("");
+      gallery.style.setProperty("--gallery-rotation", "0deg");
+      gallery.querySelectorAll(".certificate-card").forEach((card) => {
+        card.style.position = "relative";
+        card.style.top = "auto";
+        card.style.left = "auto";
+        card.style.transform = "none";
+        card.style.opacity = "1";
+      });
 
+      const prevBtn = document.getElementById("cert-prev-btn");
+      const nextBtn = document.getElementById("cert-next-btn");
+
+      if (prevBtn) {
+        prevBtn.onclick = () => {
+          gallery.scrollBy({ left: -280, behavior: "smooth" });
+        };
+      }
+
+      if (nextBtn) {
+        nextBtn.onclick = () => {
+          gallery.scrollBy({ left: 280, behavior: "smooth" });
+        };
+      }
+
+      return;
+    }
+
+    // DESKTOP (>= 640px): 3D Rotating Carousel
+    let radius = 580;
+    let perspective = 1800;
     let rotation = 0;
-    let isScrolling = false;
-    let scrollTimer;
+
+    let isDragging = false;
+    let startX = 0;
+    let startRotation = 0;
+    let velocity = 0;
+    let lastX = 0;
+    let lastTime = 0;
+    let isUserInteracting = false;
+    let interactionTimer = null;
+
+    function getParams() {
+      const w = window.innerWidth;
+      if (w < 1024) {
+        return {
+          radius: Math.max(300, Math.min(w * 0.44, 440)),
+          perspective: 1400,
+        };
+      } else {
+        return {
+          radius: 580,
+          perspective: 1800,
+        };
+      }
+    }
+
+    function renderCards() {
+      const { radius: r, perspective: p } = getParams();
+      radius = r;
+      perspective = p;
+
+      gallery.style.setProperty("--certificate-perspective", `${perspective}px`);
+      const anglePerItem = 360 / certificates.length;
+
+      gallery.innerHTML = certificates
+        .map(
+          (certificate, index) => `
+            <article
+              class="certificate-card"
+              style="
+                --certificate-angle: ${index * anglePerItem}deg;
+                --certificate-radius: ${radius}px;
+              "
+            >
+              <a
+                href="${certificate.credential_url || "#"}"
+                ${
+                  certificate.credential_url
+                    ? 'target="_blank" rel="noopener noreferrer"'
+                    : 'onclick="event.preventDefault()"'
+                }
+                class="certificate-card-inner"
+              >
+                <img
+                  src="${certificate.image}"
+                  alt="${certificate.title} certificate"
+                  loading="lazy"
+                  decoding="async"
+                />
+
+                <div class="certificate-card-content">
+                  <p>${certificate.issuer}</p>
+                  <h3>${certificate.title}</h3>
+                  <span>Issued ${certificate.date}</span>
+                </div>
+              </a>
+            </article>
+          `
+        )
+        .join("");
+    }
+
+    renderCards();
+
+    window.addEventListener(
+      "resize",
+      () => {
+        if (window.innerWidth < 640) return;
+        const { radius: r, perspective: p } = getParams();
+        radius = r;
+        perspective = p;
+        gallery.style.setProperty(
+          "--certificate-perspective",
+          `${perspective}px`
+        );
+        const anglePerItem = 360 / certificates.length;
+        gallery
+          .querySelectorAll(".certificate-card")
+          .forEach((card, index) => {
+            card.style.setProperty("--certificate-radius", `${radius}px`);
+            card.style.setProperty(
+              "--certificate-angle",
+              `${index * anglePerItem}deg`
+            );
+          });
+      },
+      { passive: true }
+    );
+
+    function onPointerDown(e) {
+      isDragging = true;
+      isUserInteracting = true;
+      clearTimeout(interactionTimer);
+      startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      lastX = startX;
+      lastTime = performance.now();
+      startRotation = rotation;
+      velocity = 0;
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      const deltaX = clientX - startX;
+      rotation = startRotation + deltaX * 0.25;
+
+      const now = performance.now();
+      const dt = now - lastTime;
+      if (dt > 0) {
+        velocity = ((clientX - lastX) * 0.25) / (dt / 16);
+      }
+      lastX = clientX;
+      lastTime = now;
+    }
+
+    function onPointerUp() {
+      if (!isDragging) return;
+      isDragging = false;
+      interactionTimer = setTimeout(() => {
+        isUserInteracting = false;
+      }, 1800);
+    }
+
+    gallery.addEventListener("mousedown", onPointerDown);
+    window.addEventListener("mousemove", onPointerMove);
+    window.addEventListener("mouseup", onPointerUp);
 
     function updateGallery() {
       gallery.style.setProperty("--gallery-rotation", `${rotation}deg`);
+      const anglePerItem = 360 / certificates.length;
+      const cards = gallery.querySelectorAll(".certificate-card");
 
-      document.querySelectorAll(".certificate-card").forEach((card, index) => {
+      cards.forEach((card, index) => {
         const itemAngle = index * anglePerItem;
-        const relativeAngle = (itemAngle + (rotation % 360) + 360) % 360;
-        const distance = Math.abs(
-          relativeAngle > 180 ? 360 - relativeAngle : relativeAngle,
-        );
+        const totalAngle = (itemAngle + (rotation % 360) + 360) % 360;
+        const rad = (totalAngle * Math.PI) / 180;
+        const cosVal = Math.cos(rad);
 
-        card.style.opacity = Math.max(0.28, 1 - distance / 180);
+        const opacity = Math.max(0.25, (cosVal + 1) / 2);
+        card.style.opacity = opacity.toFixed(2);
       });
     }
 
     window.addEventListener(
       "scroll",
       () => {
-        isScrolling = true;
-        clearTimeout(scrollTimer);
+        if (!section || window.innerWidth < 640) return;
+        const rect = section.getBoundingClientRect();
+        const totalScrollHeight = section.offsetHeight - window.innerHeight;
 
-        const scrollableHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-
-        rotation = scrollableHeight
-          ? (window.scrollY / scrollableHeight) * 360
-          : 0;
-
-        updateGallery();
-
-        scrollTimer = setTimeout(() => {
-          isScrolling = false;
-        }, 180);
+        if (
+          rect.top <= 0 &&
+          rect.bottom >= window.innerHeight &&
+          totalScrollHeight > 0
+        ) {
+          if (!isDragging) {
+            const scrollProgress = -rect.top / totalScrollHeight;
+            rotation = scrollProgress * 360 * 1.5;
+            isUserInteracting = true;
+            clearTimeout(interactionTimer);
+            interactionTimer = setTimeout(() => {
+              isUserInteracting = false;
+            }, 300);
+          }
+        }
       },
-      { passive: true },
+      { passive: true }
     );
 
     function animate() {
-      if (!isScrolling) {
-        rotation += 0.18;
-        updateGallery();
+      if (window.innerWidth < 640) return;
+      if (!isDragging) {
+        if (Math.abs(velocity) > 0.01) {
+          rotation += velocity;
+          velocity *= 0.94;
+        } else if (!isUserInteracting) {
+          rotation += 0.22;
+        }
       }
 
+      updateGallery();
       requestAnimationFrame(animate);
     }
 
     updateGallery();
     animate();
   } catch (error) {
+    console.error("Certificate load error:", error);
     gallery.innerHTML = `
       <p class="text-sm text-brand-500 text-center">
         Certificates could not be loaded.
@@ -461,12 +770,26 @@ contactForm?.addEventListener('submit', async (e) => {
   }
 });
 
-// App Initialization
-//document.addEventListener('DOMContentLoaded', () => {
- // initTheme();
- // loadCategories();
-  //loadProjects(currentCategory);
-//});
+
+function initCertificateGalleryWhenVisible() {
+  const section = document.querySelector("#certificate");
+
+  if (!section) return;
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      if (entries[0].isIntersecting) {
+        initCertificateGallery();
+        obs.disconnect();
+      }
+    },
+    {
+      rootMargin: "500px 0px",
+    }
+  );
+
+  observer.observe(section);
+}
 
 // Re-open the project after page reload
 async function restoreProjectFromURL() {
@@ -490,11 +813,17 @@ async function initApp() {
   initTheme();
   initLazyImages();
 
+  // Load the important visible content first
   await Promise.all([
     loadCategories(),
     loadProjects(currentCategory),
-    initCertificateGallery(),
   ]);
+
+  // Start heavier sections after initial rendering
+  requestAnimationFrame(() => {
+    initTechGallery();
+    initCertificateGalleryWhenVisible();
+  });
 
   await restoreProjectFromURL();
 }

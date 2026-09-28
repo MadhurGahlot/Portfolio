@@ -10,10 +10,15 @@
    <link rel="icon" type="image/jpg" href="/icon.jpg" /> 
    <!-- <link rel="icon" type="image/png" href="/logo.png" /> -->
  
-  <!-- Google Fonts -->
+  <!-- Google Fonts Optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+  </noscript>
 </head>
 <body class="bg-brand-50 dark:bg-brand-950 text-brand-900 dark:text-brand-100 font-sans selection:bg-brand-900 selection:text-brand-50 dark:selection:bg-brand-100 dark:selection:text-brand-950 transition-colors duration-300 antialiased">
   
@@ -30,9 +35,9 @@
       <nav class="hidden md:flex items-center space-x-10 text-xs tracking-ultra uppercase font-medium">
         <a href="#work" class="hover:text-brand-500 transition-colors">Work</a>
         <a href="#about" class="hover:text-brand-500 transition-colors">About & Services</a>
-        <a href="#Skills" class="hover:text-brand-500 transition-colors">Skills</a>
+        <a href="#skills" class="hover:text-brand-500 transition-colors">Skills</a>
         <a href="#contact" class="hover:text-brand-500 transition-colors">Contact</a>
-         <a href="#certificate" class="hover:text-brand-500 transition-colors">CertiFicate<a> 
+         <a href="#certificate" class="hover:text-brand-500 transition-colors">Certificate<a> 
       </nav>
 
       <!-- Right Controls: Theme Toggle & Contact Button -->
@@ -68,7 +73,7 @@
     <nav class="flex flex-col space-y-8 font-serif text-3xl italic">
       <a href="#work" class="mobile-nav-link hover:text-brand-400">01. Works</a>
       <a href="#about" class="mobile-nav-link hover:text-brand-400">02. About & Services</a>
-      <a href="#Skills" class="mobile-nav-link hover:text-brand-400">03. Skills</a>
+      <a href="#skills" class="mobile-nav-link hover:text-brand-400">03. Skills</a>
       <a href="#contact"  class= "mobile-nav-link hover:text-brand-400">04. Contact </a>
     </nav>
     <div class="border-t border-brand-800 pt-6 text-xs text-brand-400 tracking-wider">
@@ -211,7 +216,7 @@
            text-xs uppercase tracking-widest font-semibold
            hover:opacity-80 transition-all"
   >
-  <img data-src="https://images.icon-icons.com/3685/PNG/512/github_logo_icon_229278.png" alt="GitHub" loading ="lazy" class="w-5 h-5 object-contain">
+  <img src="/icons/github-logo.png" alt="GitHub" loading="lazy" decoding="async" width="20" height="20" class="w-5 h-5 object-contain">
     GitHub
     <span>↗</span>
   </a>
@@ -258,7 +263,7 @@
       <div class="lg:col-span-5 relative">
         <div class="aspect-[3/4] overflow-hidden relative border border-brand-300 dark:border-brand-800">
           <img
-  data-src="ph.jpg"
+  src="/myph (1).jpeg"
   alt="Madhur Gahlot"
   width="600"
   height="800"
@@ -317,98 +322,176 @@
   </section>
 
   <!-- Clients Section -->
-  <section id="Skills" class="py-20 px-6 md:px-12 border-t border-brand-200/80 dark:border-brand-900/80">
-    <div class="max-w-7xl mx-auto space-y-12">
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <span class="text-xs uppercase tracking-ultra text-brand-500">
-    Technologies
-</span>
-          <h2 class="font-serif text-2xl md:text-3xl font-normal mt-1">
-    Tools & Technologies
-</h2>
+<!-- Technologies -->
+<section id="skills" class="py-24 overflow-hidden">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+
+    <!-- Heading -->
+    <div class="text-center mb-10">
+      <span class="text-sm font-semibold tracking-widest uppercase text-stone-500">
+        Technologies
+      </span>
+
+      <h2 class="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+        Tools & Technologies
+      </h2>
+
+      <span class="mt-3 block text-xs tracking-[0.3em] text-stone-400">
+        PRESENT
+      </span>
+    </div>
+
+    <!-- 3D Technology Carousel -->
+    <div class="tech-gallery-container">
+      <div
+        id="tech-gallery"
+        class="tech-gallery"
+        aria-label="Tools and Technologies"
+      >
+
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+              data-src="/icons/python.svg"
+              alt="Python"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>Python</span>
+          </div>
         </div>
-        <span class="text-xs text-brand-400 tracking-wider"> PRESENT</span>
-      </div>
 
-      <!-- Name Grid -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 items-center text-center opacity-75">
-        <div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-        <a  class="flex items-center justify-center gap-2">
-    <img data-src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1280px-Python-logo-notext.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" alt="PYTHON"  class="w-8 h-8 object-contain">
-    <span>PYTHON</span> 
-</a>
-</div>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+              data-src="/icons/cplusplus.svg"
+              alt="C++"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>C++</span>
+          </div>
+        </div>
 
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-    <a  class="flex items-center justify-center gap-2">
-    <img
-  data-src="https://raw.githubusercontent.com/Benio101/cpp-logo/master/cpp_logo.png"
-  alt="Cpp"
-  width="32"
-  height="32"
-  class="w-8 h-8 object-contain">
-    <span>CPP</span>
-</a>
-</div>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+              data-src="/icons/fastapi.svg"
+              alt="FastAPI"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>FastAPI</span>
+          </div>
+        </div>
 
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
- <a  class="flex items-center justify-center gap-2">
-    <img data-src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/fastapi.webp" alt="fastapi" class="w-8 h-8 object-contain">
-    <span>FASTAPI</span>
-</a>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+              data-src="/icons/mysql.svg"
+              alt="MySQL"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>MySQL</span>
+          </div>
+        </div>
 
-</div>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+              data-src="/icons/postgresql.svg"
+              alt="PostgreSQL"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>PostgreSQL</span>
+          </div>
+        </div>
 
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-  <a  class="flex items-center justify-center gap-2">
-    <img  data-src="https://pngimg.com/uploads/mysql/mysql_PNG9.png" alt="Mysql"  class ="w-15 h-8" object-contain>
-   <span>  MYSQL </span> 
-</a>
-</div>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+             data-src="/icons/pytorch.svg"
+              alt="AI ML"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>AI / ML</span>
+          </div>
+        </div>
 
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
- <a  class="flex items-center justify-center gap-2">
-    <img data-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPJ5POJk0x-JpS68wRxqGPYtqQVmEBDhnv9FENtOzU8Sy_ntLI2LwLK7ft&s=10" alt="PostgreSQL"   class="w-8 h-8 object-contain">
-    <span>POSTGRES </span>
-</a>
-</div>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+             data-src="/icons/github.svg"
+              alt="GitHub"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>GitHub</span>
+          </div>
+        </div>
 
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-    AI / ML
-</div>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+             src="/icons/pandas.svg"
+              alt="Pandas"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>Pandas</span>
+          </div>
+        </div>
 
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-   <a  class="flex items-center justify-center gap-2">
-    <img data-src="https://images.icon-icons.com/3685/PNG/512/github_logo_icon_229278.png" alt="github"  class="w-8 h-8 object-contain">
-    <span>GITHUB </span>
-</a>
-</div>
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+              src="/icons/matplotlib.svg"
+              alt="Matplotlib"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>Matplotlib</span>
+          </div>
+        </div>
 
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-       <a  class="flex items-center justify-center gap-2">
-    <img data-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFziRuSQusnk_nkodTezHTvBoAzCyYv3eyjXTFCfoqCSsxHDMKBrtuHdk&s=10" alt="pandas"  class="w-8 h-8 object-contain">
-    <span>PANDAS </span>
-</a>
-</div>
-
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-           <a  class="flex items-center justify-center gap-2">
-    <img data-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8tpzP_x2Yi0eNuN4nmDv3mUDBDHAMVsSCZvMlLS5HaA&s" alt="MATPLOTLIB"  class="w-8 h-8 object-contain">
-    <span> MATPLOT </span>
-</a>
-</div>
-
-<div class="py-6 border border-brand-200 dark:border-brand-800 font-serif tracking-widest text-lg">
-           <a  class="flex items-center justify-center gap-2">
-    <img data-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2igmCQLJOYMBf9Axb7MkFgjE0UkE6IVOte7ac6-9ecw&s" alt="raylib"  class="w-8 h-8 object-contain">
-    <span>RAYLIB </span>
-</a>
-</div>
-
+        <div class="tech-card">
+          <div class="tech-card-inner">
+            <img
+              src="/icons/opengl.svg"
+              alt="Raylib"
+              loading="lazy"
+              decoding="async"
+              width="48"
+              height="48"
+            >
+            <span>Raylib</span>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 
 
@@ -427,6 +510,17 @@
     </div>
 
     <div id="certificate-gallery" class="certificate-gallery" aria-label="Certificate gallery"></div>
+
+    <!-- Mobile Slider Controls (Visible only on mobile screens) -->
+    <div id="certificate-controls" class="flex sm:hidden items-center justify-center gap-4 mt-6 z-20">
+      <button id="cert-prev-btn" type="button" aria-label="Previous Certificate" class="p-3 rounded-full border border-brand-300 dark:border-brand-700 bg-brand-100/90 dark:bg-brand-900/90 text-brand-800 dark:text-brand-200 active:scale-95 transition-all shadow-md">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+      </button>
+      <span class="text-[11px] uppercase tracking-widest text-brand-500 font-medium">Swipe or tap &larr; &rarr;</span>
+      <button id="cert-next-btn" type="button" aria-label="Next Certificate" class="p-3 rounded-full border border-brand-300 dark:border-brand-700 bg-brand-100/90 dark:bg-brand-900/90 text-brand-800 dark:text-brand-200 active:scale-95 transition-all shadow-md">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </button>
+    </div>
   </div>
 </section>
 

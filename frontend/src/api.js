@@ -1,92 +1,53 @@
-// frontend/src/api.js
+import {
+  CERTIFICATES,
+  PORTFOLIO_CATEGORIES,
+  PORTFOLIO_PROJECTS,
+} from "./data.js";
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
-
-/**
- * Fetch list of portfolio categories
- */
-export async function fetchCategories() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/categories`);
-    if (!res.ok) throw new Error('Failed to fetch categories');
-    return await res.json();
-  } catch (error) {
-    console.error('API Error [fetchCategories]:', error);
-    // Fallback data if backend unavailable
-    return [
-      { id: 'all', name: 'All Works' },
-      { id: 'AI/ML', name: 'AI & ML Tool' },
-      { id: 'Backend', name: 'Backend Develoment' },
-      { id: 'Cpp', name: 'Cpp & Graphics' },
-      { id: 'Intergration', name: 'Backend & Intergration' }
-    ];
-  }
+export function fetchCategories() {
+  return PORTFOLIO_CATEGORIES;
 }
 
-/**
- * Fetch portfolio projects with optional category filtering
- * @param {string} category 
- */
-export async function fetchProjects(category = 'all') {
-  try {
-    const url = category && category !== 'all' 
-      ? `${API_BASE_URL}/projects?category=${encodeURIComponent(category)}`
-      : `${API_BASE_URL}/projects`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Failed to fetch projects');
-    return await res.json();
-  } catch (error) {
-    console.error('API Error [fetchProjects]:', error);
-    return [];
+export function fetchProjects(category = "all") {
+  if (category === "all") {
+    return PORTFOLIO_PROJECTS;
   }
+
+  return PORTFOLIO_PROJECTS.filter(
+    (project) => project.category === category
+  );
 }
 
-/**
- * Fetch project details by slug or ID
- * @param {string} slug 
- */
-export async function fetchProjectBySlug(slug) {
-  try {
-    const res = await fetch(`${API_BASE_URL}/projects/${slug}`);
-    if (!res.ok) throw new Error('Project not found');
-    return await res.json();
-  } catch (error) {
-    console.error('API Error [fetchProjectBySlug]:', error);
-    return null;
-  }
+export function fetchProjectBySlug(slug) {
+  return (
+    PORTFOLIO_PROJECTS.find(
+      (project) => project.slug === slug
+    ) || null
+  );
 }
 
-/**
- * Submit contact form payload to FastAPI endpoint
- * @param {Object} formData 
- */
-export async function submitContact(formData) {
-  try {
-    const res = await fetch(`${API_BASE_URL}/contact`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.detail || 'Submission failed');
-    }
-    return data;
-  } catch (error) {
-    console.error('API Error [submitContact]:', error);
-    throw error;
-  }
+export function fetchCertificates() {
+  return CERTIFICATES;
 }
 
+export function submitContact(payload) {
+  const subject = encodeURIComponent(
+    `Portfolio enquiry from ${payload.name}`
+  );
 
-export async function fetchCertificates() {
-  const response = await fetch(`${API_BASE_URL}/certificates`);
+  const body = encodeURIComponent(
+    `Name: ${payload.name}
+Email: ${payload.email}
+Service: ${payload.service}
+Budget: ${payload.budget}
 
-  if (!response.ok) {
-    throw new Error(`Certificates request failed: ${response.status}`);
-  }
+${payload.message}`
+  );
 
-  return response.json();
+  window.location.href =
+    `mailto:madhurgahlot20@gmail.com?subject=${subject}&body=${body}`;
+
+  return {
+    message: "Your email application is opening.",
+  };
 }
