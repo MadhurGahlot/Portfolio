@@ -2,10 +2,15 @@ import {
   CERTIFICATES,
   PORTFOLIO_CATEGORIES,
   PORTFOLIO_PROJECTS,
+  EDUCATION
 } from "./data.js";
 
 export function fetchCategories() {
   return PORTFOLIO_CATEGORIES;
+}
+
+export function fetchEducation() {
+  return EDUCATION;
 }
 
 export function fetchProjects(category = "all") {

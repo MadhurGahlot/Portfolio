@@ -1,7 +1,25 @@
 // frontend/src/main.js
 import './style.css';
-import { fetchCategories, fetchProjects, fetchProjectBySlug, submitContact ,fetchCertificates,} 
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { fetchCategories, fetchProjects, fetchProjectBySlug, submitContact ,fetchCertificates,fetchEducation} 
 from './api.js';
+
+async function initReactCertificateWheel() {
+  const container = document.getElementById('certificate-react-root');
+
+  if (!container) return;
+
+  const { default: CertificateWheelSection } =
+    await import('./components/CertificateWheelSection');
+
+  const root = createRoot(container);
+
+  root.render(
+    React.createElement(CertificateWheelSection)
+  );
+}
+
 
 // State management
 let currentCategory = 'all';
@@ -132,9 +150,7 @@ async function loadCategories() {
   });
 }
 
-/**
- * Render Project Cards into  Layout
- */
+
 async function loadProjects(category = 'all') {
   if (!projectsContainer) return;
 
@@ -212,9 +228,6 @@ async function loadProjects(category = 'all') {
   });
 }
 
-/**
- * Open Project Detail Modal
- */
 async function openProjectModal(slug) {
   const project = await fetchProjectBySlug(slug);
   if (!project) return;
@@ -297,11 +310,6 @@ projectModal?.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeProjectModal();
 });
-
-
-// For Certificate 
-
-// For Certificate & Skills Carousels
 
 function initTechGallery() {
   const container = document.querySelector(".tech-gallery-container");
@@ -434,294 +442,331 @@ function initTechGallery() {
   animate();
 }
 
+
 async function initCertificateGallery() {
-  const gallery = document.getElementById("certificate-gallery");
-  const section = document.getElementById("certificate");
-  if (!gallery) return;
+  const stage = document.getElementById("certificate-wheel-stage");
+  const wheel = document.getElementById("certificate-wheel-track");
+  const label = document.getElementById("certificate-wheel-label");
+  const title = document.getElementById("certificate-wheel-title");
+  const index = document.getElementById("certificate-wheel-index");
+  const current = document.getElementById("certificate-current");
+  const total = document.getElementById("certificate-total");
+  const verifyButton = document.getElementById("certificate-verify");
 
-  try {
-    const certificates = await fetchCertificates();
-    if (!certificates.length) return;
+  if (!stage || !wheel || !index) return;
 
-    // MOBILE (< 640px): Non-rotating attractive horizontal snap slider
-    if (window.innerWidth < 640) {
-      gallery.innerHTML = certificates
-        .map(
-          (certificate) => `
-            <article class="certificate-card">
-              <a
-                href="${certificate.credential_url || "#"}"
-                ${
-                  certificate.credential_url
-                    ? 'target="_blank" rel="noopener noreferrer"'
-                    : 'onclick="event.preventDefault()"'
-                }
-                class="certificate-card-inner"
-              >
-                <img
-                  src="${certificate.image}"
-                  alt="${certificate.title} certificate"
-                  loading="lazy"
-                  decoding="async"
-                />
+  const certificates = fetchCertificates();
 
-                <div class="certificate-card-content">
-                  <p>${certificate.issuer}</p>
-                  <h3>${certificate.title}</h3>
-                  <div class="flex items-center justify-between mt-1">
-                    <span>Issued ${certificate.date}</span>
-                    ${
-                      certificate.credential_url
-                        ? `<span class="text-[10px] text-cyan-400 font-semibold tracking-wider uppercase">Verify ↗</span>`
-                        : ""
-                    }
-                  </div>
-                </div>
-              </a>
-            </article>
-          `
-        )
-        .join("");
+  if (!certificates?.length) return;
 
-      gallery.style.setProperty("--gallery-rotation", "0deg");
-      gallery.querySelectorAll(".certificate-card").forEach((card) => {
-        card.style.position = "relative";
-        card.style.top = "auto";
-        card.style.left = "auto";
-        card.style.transform = "none";
-        card.style.opacity = "1";
-      });
+  const count = certificates.length;
+  const last = count - 1;
+  const DRUM = 1.1;
+  const BOW = 0.75;
+  const LENS = 2.4;
+  const RING_RADIUS = 0.8;
+  const CARD_HEIGHT_FACTOR = 0.48;
+  const CARD_WIDTH_FACTOR = 0.78;
+  const CARD_RATIO = 1.42;
+ const STEP = 32;
+const CULL = 0.55;
+  const WHEEL_UNITS = 900;
+  const DRAG_UNITS = 420;
+  const EASE = 0.12;
 
-      const prevBtn = document.getElementById("cert-prev-btn");
-      const nextBtn = document.getElementById("cert-next-btn");
+  let turn = 1;
+  let target = 1;
+  let active = 0;
+  let dragY = null;
+  let settleTimer;
+  let resizeTimer;
 
-      if (prevBtn) {
-        prevBtn.onclick = () => {
-          gallery.scrollBy({ left: -280, behavior: "smooth" });
-        };
-      }
+  wheel.innerHTML = "";
+  index.innerHTML = "";
 
-      if (nextBtn) {
-        nextBtn.onclick = () => {
-          gallery.scrollBy({ left: 280, behavior: "smooth" });
-        };
-      }
-
-      return;
-    }
-
-    // DESKTOP (>= 640px): 3D Rotating Carousel
-    let radius = 580;
-    let perspective = 1800;
-    let rotation = 0;
-
-    let isDragging = false;
-    let startX = 0;
-    let startRotation = 0;
-    let velocity = 0;
-    let lastX = 0;
-    let lastTime = 0;
-    let isUserInteracting = false;
-    let interactionTimer = null;
-
-    function getParams() {
-      const w = window.innerWidth;
-      if (w < 1024) {
-        return {
-          radius: Math.max(300, Math.min(w * 0.44, 440)),
-          perspective: 1400,
-        };
-      } else {
-        return {
-          radius: 580,
-          perspective: 1800,
-        };
-      }
-    }
-
-    function renderCards() {
-      const { radius: r, perspective: p } = getParams();
-      radius = r;
-      perspective = p;
-
-      gallery.style.setProperty("--certificate-perspective", `${perspective}px`);
-      const anglePerItem = 360 / certificates.length;
-
-      gallery.innerHTML = certificates
-        .map(
-          (certificate, index) => `
-            <article
-              class="certificate-card"
-              style="
-                --certificate-angle: ${index * anglePerItem}deg;
-                --certificate-radius: ${radius}px;
-              "
-            >
-              <a
-                href="${certificate.credential_url || "#"}"
-                ${
-                  certificate.credential_url
-                    ? 'target="_blank" rel="noopener noreferrer"'
-                    : 'onclick="event.preventDefault()"'
-                }
-                class="certificate-card-inner"
-              >
-                <img
-                  src="${certificate.image}"
-                  alt="${certificate.title} certificate"
-                  loading="lazy"
-                  decoding="async"
-                />
-
-                <div class="certificate-card-content">
-                  <p>${certificate.issuer}</p>
-                  <h3>${certificate.title}</h3>
-                  <span>Issued ${certificate.date}</span>
-                </div>
-              </a>
-            </article>
-          `
-        )
-        .join("");
-    }
-
-    renderCards();
-
-    window.addEventListener(
-      "resize",
-      () => {
-        if (window.innerWidth < 640) return;
-        const { radius: r, perspective: p } = getParams();
-        radius = r;
-        perspective = p;
-        gallery.style.setProperty(
-          "--certificate-perspective",
-          `${perspective}px`
-        );
-        const anglePerItem = 360 / certificates.length;
-        gallery
-          .querySelectorAll(".certificate-card")
-          .forEach((card, index) => {
-            card.style.setProperty("--certificate-radius", `${radius}px`);
-            card.style.setProperty(
-              "--certificate-angle",
-              `${index * anglePerItem}deg`
-            );
-          });
-      },
-      { passive: true }
-    );
-
-    function onPointerDown(e) {
-      isDragging = true;
-      isUserInteracting = true;
-      clearTimeout(interactionTimer);
-      startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-      lastX = startX;
-      lastTime = performance.now();
-      startRotation = rotation;
-      velocity = 0;
-    }
-
-    function onPointerMove(e) {
-      if (!isDragging) return;
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-      const deltaX = clientX - startX;
-      rotation = startRotation + deltaX * 0.25;
-
-      const now = performance.now();
-      const dt = now - lastTime;
-      if (dt > 0) {
-        velocity = ((clientX - lastX) * 0.25) / (dt / 16);
-      }
-      lastX = clientX;
-      lastTime = now;
-    }
-
-    function onPointerUp() {
-      if (!isDragging) return;
-      isDragging = false;
-      interactionTimer = setTimeout(() => {
-        isUserInteracting = false;
-      }, 1800);
-    }
-
-    gallery.addEventListener("mousedown", onPointerDown);
-    window.addEventListener("mousemove", onPointerMove);
-    window.addEventListener("mouseup", onPointerUp);
-
-    function updateGallery() {
-      gallery.style.setProperty("--gallery-rotation", `${rotation}deg`);
-      const anglePerItem = 360 / certificates.length;
-      const cards = gallery.querySelectorAll(".certificate-card");
-
-      cards.forEach((card, index) => {
-        const itemAngle = index * anglePerItem;
-        const totalAngle = (itemAngle + (rotation % 360) + 360) % 360;
-        const rad = (totalAngle * Math.PI) / 180;
-        const cosVal = Math.cos(rad);
-
-        const opacity = Math.max(0.25, (cosVal + 1) / 2);
-        card.style.opacity = opacity.toFixed(2);
-      });
-    }
-
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!section || window.innerWidth < 640) return;
-        const rect = section.getBoundingClientRect();
-        const totalScrollHeight = section.offsetHeight - window.innerHeight;
-
-        if (
-          rect.top <= 0 &&
-          rect.bottom >= window.innerHeight &&
-          totalScrollHeight > 0
-        ) {
-          if (!isDragging) {
-            const scrollProgress = -rect.top / totalScrollHeight;
-            rotation = scrollProgress * 360 * 1.5;
-            isUserInteracting = true;
-            clearTimeout(interactionTimer);
-            interactionTimer = setTimeout(() => {
-              isUserInteracting = false;
-            }, 300);
-          }
-        }
-      },
-      { passive: true }
-    );
-
-    function animate() {
-      if (window.innerWidth < 640) return;
-      if (!isDragging) {
-        if (Math.abs(velocity) > 0.01) {
-          rotation += velocity;
-          velocity *= 0.94;
-        } else if (!isUserInteracting) {
-          rotation += 0.22;
-        }
-      }
-
-      updateGallery();
-      requestAnimationFrame(animate);
-    }
-
-    updateGallery();
-    animate();
-  } catch (error) {
-    console.error("Certificate load error:", error);
-    gallery.innerHTML = `
-      <p class="text-sm text-brand-500 text-center">
-        Certificates could not be loaded.
-      </p>
-    `;
+  if (total) {
+    total.textContent = String(count).padStart(2, "0");
   }
+
+  const cards = certificates.map((certificate, position) => {
+    const card = document.createElement("a");
+
+    card.className = "certificate-wheel-card";
+    card.dataset.index = String(position);
+    card.href = certificate.credential_url || "#";
+
+    if (certificate.credential_url) {
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+    } else {
+      card.addEventListener("click", (event) => {
+        event.preventDefault();
+      });
+    }
+
+    const face = document.createElement("span");
+    face.className = "certificate-wheel-card-face";
+
+    const image = document.createElement("img");
+    image.src = certificate.image;
+    image.alt = `${certificate.title} certificate`;
+    image.loading = position < 2 ? "eager" : "lazy";
+    image.fetchPriority = position === 0 ? "high" : "auto";
+    image.decoding = "async";
+    image.draggable = false;
+
+    const overlay = document.createElement("span");
+    overlay.className = "certificate-wheel-overlay";
+
+    overlay.innerHTML = `
+      <span class="certificate-wheel-overlay-title">
+        ${certificate.title}
+      </span>
+      <span class="certificate-wheel-overlay-issuer">
+        ${certificate.issuer} · ${certificate.date}
+      </span>
+    `;
+
+    face.append(image, overlay);
+    card.append(face);
+    wheel.append(card);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = certificate.title;
+
+    button.addEventListener("click", () => {
+      goTo(position + 1);
+    });
+
+    const item = document.createElement("li");
+    item.append(button);
+    index.append(item);
+
+    return card;
+  });
+
+  const faces = cards.map((card) =>
+    card.querySelector(".certificate-wheel-card-face"),
+  );
+
+  const indexButtons = [...index.querySelectorAll("button")];
+
+  const clamp = (value, min, max) =>
+    Math.min(max, Math.max(min, value));
+
+  const lerp = (from, to, amount) =>
+    from + (to - from) * amount;
+
+  const radians = (degrees) =>
+    (degrees * Math.PI) / 180;
+
+  const bowAt = (degrees, bow) =>
+    -bow * (1 - Math.cos(radians(degrees)));
+
+  function getMetrics() {
+    const width = stage.clientWidth;
+    const height = stage.clientHeight;
+
+    const cardWidth = Math.min(
+      height * CARD_HEIGHT_FACTOR * CARD_RATIO,
+      width * CARD_WIDTH_FACTOR,
+      680,
+    );
+
+    const cardHeight = cardWidth / CARD_RATIO;
+    const ringRadius = cardHeight * RING_RADIUS;
+
+const ringScale = clamp(
+  ((2 * Math.PI * ringRadius * 0.65) / count) / cardWidth,
+  0.24,
+  0.48,
+);
+
+    return {
+      cardWidth,
+      cardHeight,
+      ringRadius,
+      drumRadius: cardHeight * DRUM,
+      bow: cardHeight * BOW,
+      depth: Math.max(850, cardHeight * LENS),
+      ringScale,
+    };
+  }
+
+function updateActive() {
+  const selected = certificates[active];
+
+  if (title && selected) {
+    title.textContent = selected.title;
+  }
+
+  if (current) {
+    current.textContent = String(active + 1).padStart(2, "0");
+  }
+
+  if (verifyButton && selected) {
+    const url = (selected.credential_url || "").trim();
+
+    verifyButton.href = url || "#";
+    verifyButton.classList.toggle("hidden", !url);
+  }
+
+  indexButtons.forEach((button, position) => {
+    button.classList.toggle("active", position === active);
+  });
+}
+function goTo(next) {
+  target = clamp(next, 1, last + 1);
 }
 
-/**
- * Contact Form Submission Handling with FastAPI backend
- */
+function render() {
+    const metrics = getMetrics();
+    const visibleIndex = clamp(Math.round(position), 0, last);
+
+    const {
+      cardWidth,
+      cardHeight,
+      ringRadius,
+      drumRadius,
+      bow,
+      depth,
+      ringScale,
+    } = metrics;
+
+    stage.style.perspective = `${depth}px`;
+
+    const difference = target - turn;
+
+    turn =
+      Math.abs(difference) < 0.0005
+        ? target
+        : turn + difference * EASE;
+
+    const morph = clamp(turn, 0, 1);
+    const position = Math.max(0, turn - 1);
+
+    wheel.style.transform = `translateZ(${-morph * drumRadius}px)`;
+
+    cards.forEach((card, cardIndex) => {
+      /* Fixes tiny cards and oversized circle */
+      card.style.width = `${cardWidth}px`;
+      card.style.height = `${cardHeight}px`;
+      card.style.marginLeft = `-${cardWidth / 2}px`;
+      card.style.marginTop = `-${cardHeight / 2}px`;
+
+      const distance = cardIndex - position;
+      const drumDegrees = distance * STEP;
+      const ringDegrees = distance * (360 / count);
+
+      card.style.transform = `
+        translateX(${morph * bowAt(drumDegrees, bow)}px)
+        rotateZ(${(1 - morph) * ringDegrees}deg)
+        translateY(${-(1 - morph) * ringRadius}px)
+        rotateX(${morph * drumDegrees}deg)
+        translateZ(${morph * drumRadius}px)
+      `;
+
+     card.style.pointerEvents =
+  morph > 0.5 && Math.abs(distance) > CULL
+    ? "none"
+    : "auto";
+
+      card.style.zIndex = String(
+        Math.round(100 - Math.abs(distance) * 2),
+      );
+
+      if (faces[cardIndex]) {
+        faces[cardIndex].style.transform =
+          `scale(${lerp(ringScale, 1, morph)})`;
+      }
+    });
+
+    if (label) {
+      label.style.opacity = String(1 - morph);
+    }
+
+    if (title) {
+      title.style.opacity = String(morph);
+    }
+
+    const nearest = clamp(Math.round(position), 0, last);
+
+    if (nearest !== active) {
+      active = nearest;
+      updateActive();
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  stage.addEventListener(
+    "wheel",
+    (event) => {
+      const next = target + event.deltaY / WHEEL_UNITS;
+
+      if (next > 0 && next < last + 1) {
+        event.preventDefault();
+      }
+
+      goTo(next);
+
+      clearTimeout(settleTimer);
+
+      settleTimer = setTimeout(() => {
+        goTo(Math.round(target));
+      }, 140);
+    },
+    { passive: false },
+  );
+
+  stage.addEventListener("pointerdown", (event) => {
+    dragY = event.clientY;
+    stage.setPointerCapture(event.pointerId);
+  });
+
+  stage.addEventListener("pointermove", (event) => {
+    if (dragY === null) return;
+
+    goTo(target + (dragY - event.clientY) / DRAG_UNITS);
+    dragY = event.clientY;
+  });
+
+  function stopDrag() {
+    dragY = null;
+
+    if (target > 0) {
+      goTo(Math.round(target));
+    }
+  }
+
+  stage.addEventListener("pointerup", stopDrag);
+  stage.addEventListener("pointercancel", stopDrag);
+
+  stage.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown") {
+      goTo(Math.round(target) + 1);
+      event.preventDefault();
+    }
+
+    if (event.key === "ArrowUp") {
+      goTo(Math.round(target) - 1);
+      event.preventDefault();
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+
+    resizeTimer = setTimeout(() => {
+      render();
+    }, 100);
+  });
+
+  updateActive();
+  render();
+}
+
 const contactForm = document.getElementById('contact-form');
 const contactStatus = document.getElementById('contact-status');
 const submitBtn = document.getElementById('submit-btn');
@@ -779,19 +824,342 @@ function initCertificateGalleryWhenVisible() {
   const observer = new IntersectionObserver(
     (entries, obs) => {
       if (entries[0].isIntersecting) {
-        initCertificateGallery();
-        obs.disconnect();
-      }
+  initCertificateGallery();
+  initReactCertificateWheel();
+  obs.disconnect();
+}
     },
     {
-      rootMargin: "500px 0px",
+      rootMargin: "300px 0px",
     }
   );
 
   observer.observe(section);
 }
 
-// Re-open the project after page reload
+function initEducationTimeline() {
+
+  const section = document.querySelector("#education");
+  const track = document.querySelector("#education-track");
+
+  if (!section || !track) return;
+
+  const education = fetchEducation();
+
+  if (!education || !education.length) return;
+
+  track.innerHTML = education
+    .map((item, index) => {
+
+      const tags = item.tags
+        .map(
+          (tag) =>
+            `<span class="education-tag">${tag}</span>`
+        )
+        .join("");
+
+      return `
+        <article
+          class="education-item ${item.side}"
+          data-education-index="${index}"
+        >
+
+          <div class="education-card">
+
+            <span class="education-card-number">
+              ${String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div class="education-year">
+
+              <span class="education-year-number">
+                ${item.year}
+              </span>
+
+              <span class="education-year-month">
+                ${item.month}
+              </span>
+
+            </div>
+
+
+            <h3>
+              ${item.title}
+            </h3>
+
+
+            <div class="education-institution">
+              ${item.institution}
+            </div>
+
+
+            <div class="education-location">
+              ${item.location}
+            </div>
+
+
+            <p class="education-description">
+              ${item.description}
+            </p>
+
+
+            <div class="education-tags">
+              ${tags}
+            </div>
+
+          </div>
+
+
+          <span class="education-dot"></span>
+
+        </article>
+      `;
+
+    })
+    .join("");
+
+
+  const items =
+    track.querySelectorAll(".education-item");
+
+  const progress =
+    document.querySelector("#education-progress-bar");
+
+  const current =
+    document.querySelector("#education-current");
+
+  const total =
+    document.querySelector("#education-total");
+
+
+  if (total) {
+    total.textContent =
+      String(items.length).padStart(2, "0");
+  }
+
+  if (window.innerWidth <= 768) {
+    return;
+  }
+
+
+  /* -------------------------------------------------------
+     Check GSAP
+     ------------------------------------------------------- */
+
+  if (
+    typeof window.gsap === "undefined" ||
+    typeof window.ScrollTrigger === "undefined"
+  ) {
+
+    console.warn(
+      "GSAP / ScrollTrigger not loaded."
+    );
+
+    return;
+
+  }
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ) {
+
+    gsap.set(items, {
+      opacity: 1,
+      y: 0
+    });
+
+    return;
+
+  }
+
+  function getScrollDistance() {
+
+    return Math.max(
+      0,
+      track.scrollWidth -
+      window.innerWidth +
+      window.innerWidth * 0.15
+    );
+
+  }
+
+  const horizontalTween = gsap.to(track, {
+
+    x: () => -getScrollDistance(),
+
+    ease: "none",
+
+    scrollTrigger: {
+
+      trigger: section,
+
+      start: "top top",
+
+      end: "bottom bottom",
+
+      scrub: 1,
+
+      invalidateOnRefresh: true,
+
+      onUpdate: (self) => {
+
+        const percentage =
+          self.progress * 100;
+
+        if (progress) {
+
+          progress.style.width =
+            `${percentage}%`;
+
+        }
+
+
+        const index = Math.min(
+          items.length - 1,
+          Math.floor(
+            self.progress * items.length
+          )
+        );
+
+
+        if (current) {
+
+          current.textContent =
+            String(index + 1).padStart(2, "0");
+
+        }
+
+      }
+
+    }
+
+  });
+
+  items.forEach((item, index) => {
+
+    const card =
+      item.querySelector(".education-card");
+
+    const dot =
+      item.querySelector(".education-dot");
+
+
+    gsap.fromTo(
+      item,
+
+      {
+        opacity: 0,
+        y:
+          item.classList.contains("top")
+            ? -70
+            : 70
+      },
+
+      {
+        opacity: 1,
+        y: 0,
+
+        duration: 0.8,
+
+        ease: "power3.out",
+
+        scrollTrigger: {
+
+          trigger: item,
+
+          containerAnimation: horizontalTween,
+
+          start: "left 85%",
+
+          end: "left 45%",
+
+          scrub: true
+
+        }
+
+      }
+    );
+
+
+    /* Card hover scale */
+
+    if (card) {
+
+      card.addEventListener(
+        "mouseenter",
+        () => {
+
+          gsap.to(card, {
+
+            y: -8,
+
+            duration: 0.35,
+
+            ease: "power2.out"
+
+          });
+
+          gsap.to(dot, {
+
+            scale: 1.5,
+
+            duration: 0.25,
+
+            ease: "power2.out"
+
+          });
+
+        }
+      );
+
+
+      card.addEventListener(
+        "mouseleave",
+        () => {
+
+          gsap.to(card, {
+            y: 0,
+
+            duration: 0.35,
+
+            ease: "power2.out"
+
+          });
+
+          gsap.to(dot, {
+
+            scale: 1,
+
+            duration: 0.25,
+
+            ease: "power2.out"
+
+          });
+
+        }
+      );
+
+    }
+
+  });
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      ScrollTrigger.refresh();
+
+    },
+    {
+      once: true
+    }
+  );
+
+}
+
 async function restoreProjectFromURL() {
   const hash = window.location.hash;
 
@@ -812,6 +1180,8 @@ async function initApp() {
 
   initTheme();
   initLazyImages();
+  initEducationTimeline();
+  initReactCertificateWheel();
 
   // Load the important visible content first
   await Promise.all([
@@ -823,6 +1193,8 @@ async function initApp() {
   requestAnimationFrame(() => {
     initTechGallery();
     initCertificateGalleryWhenVisible();
+    
+     
   });
 
   await restoreProjectFromURL();

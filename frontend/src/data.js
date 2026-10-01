@@ -135,7 +135,7 @@ export const CERTIFICATES = [
         "title": "Computer Architecture",
         "issuer": "NPTEL",
         "date": "NOV 2024",
-        "image": "https://media.licdn.com/dms/image/v2/D5622AQEnJaytMLOAzw/feedshare-shrink_800/feedshare-shrink_800/0/1732463329747?e=1790812800&v=beta&t=BT451viOOBkN9S2YRoHUR115ViXbzmDOAX6WmmbGqgw",
+        "image": "/certificates/c10.webp",
         "credential_url": "",
 
     },
@@ -186,5 +186,54 @@ export const CERTIFICATES = [
     "date" : "27-09-2026",
     "image" : "/certificates/c9.webp",
     "credential_url" : "https://www.hackerrank.com/certificates/cc090689b092"
+  },
+   {
+    "id" : "EXCEL",
+    "title" : "MICROSOFT EXCEL BASIC TO ADVANCE" ,
+    "issuer" : "SKILLCOURSE ",
+    "date" : "29-09-2026",
+    "image" : "/certificates/C11.webp",
+    "credential_url" : "https://edu.skillcourse.in/view-certificate/SC-0Y9LQ0JED0"
+  },
+];
+
+export const EDUCATION = [
+
+ {
+  id: "HIGH SCHOOL",
+  year: "2021",
+  month: "April",
+  title: "HIGH SCHOOL (Class 10th)",
+  institution: "Uttar Pradesh Madhyamik Shiksha Parishad (UP Board)",
+  location: "Uttar Pradesh, India",
+  description:
+    "Completed HIGHSCHOOL (Class 10th) with 86% from the Uttar Pradesh Board, building a strong foundation in academics .",
+  tags: ["Class 10th", "UP Board", "86%", "Science","MATHS","SOCIAL SCIENCE","HINDI","ENGLISH","DRAWING"],
+  side: "top",
+},
+{
+  id: "Intermediate",
+  year: "2023",
+  month: "April",
+  title: "Intermediate (Class 12th)",
+  institution: "Uttar Pradesh Madhyamik Shiksha Parishad (UP Board)",
+  location: "Uttar Pradesh, India",
+  description:
+    "Completed Intermediate (Class 12th) with 86% from the Uttar Pradesh Board, building a strong foundation in academics and preparing for higher studies in Computer Science.",
+  tags: ["Class 12th", "UP Board", "81%", "Science","Physics",],
+  side: "bottom",
+},
+
+  {
+    id: "edu-2027",
+    year: "2027",
+    month: "EXPECTED",
+    title: "B.Tech Graduation",
+    institution: "Gurukula Kangri Vishwavidyalaya",
+    location: "Haridwar, Uttarakhand",
+    description:
+      "Expected completion of my B.Tech in Computer Science & Engineering and transition into a software engineering or AI/ML engineering role.",
+    tags: ["Graduation", "Career", "AI/ML"],
+    side: "top",
   },
 ];
