@@ -815,7 +815,6 @@ contactForm?.addEventListener('submit', async (e) => {
   }
 });
 
-
 function initCertificateGalleryWhenVisible() {
   const section = document.querySelector("#certificate");
 
@@ -823,14 +822,18 @@ function initCertificateGalleryWhenVisible() {
 
   const observer = new IntersectionObserver(
     (entries, obs) => {
-      if (entries[0].isIntersecting) {
-  initCertificateGallery();
-  initReactCertificateWheel();
-  obs.disconnect();
-}
+      const entry = entries[0];
+
+      if (!entry.isIntersecting) return;
+
+      // Lazy-load the React certificate wheel
+      initReactCertificateWheel();
+
+      // Only load it once
+      obs.disconnect();
     },
     {
-      rootMargin: "300px 0px",
+      rootMargin: "600px 0px",
     }
   );
 
@@ -1171,6 +1174,29 @@ async function restoreProjectFromURL() {
     }
   }
 }
+async function initGlobalBackground() {
+  const container = document.getElementById("dye-whorl-bg-root");
+
+  if (!container) return;
+
+  try {
+    const { default: DyeWhorl } =
+      await import("./components/ui/dye-whorl");
+
+    const root = createRoot(container);
+
+    root.render(
+      React.createElement(DyeWhorl, {
+        speed: 0.75,
+        interactive: true,
+      })
+    );
+  } catch (error) {
+    console.error("Failed to load global background:", error);
+  }
+}
+
+
 
 let appStarted = false;
 
@@ -1178,23 +1204,19 @@ async function initApp() {
   if (appStarted) return;
   appStarted = true;
 
-  initTheme();
-  initLazyImages();
-  initEducationTimeline();
-  initReactCertificateWheel();
+ initTheme();
+ initLazyImages();
+ initEducationTimeline();
+ initGlobalBackground();
 
-  // Load the important visible content first
   await Promise.all([
     loadCategories(),
     loadProjects(currentCategory),
   ]);
 
-  // Start heavier sections after initial rendering
   requestAnimationFrame(() => {
     initTechGallery();
     initCertificateGalleryWhenVisible();
-    
-     
   });
 
   await restoreProjectFromURL();

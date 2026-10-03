@@ -6,6 +6,8 @@ export interface DyeWhorlProps {
   className?: string;
   speed?: number;
   interactive?: boolean;
+  /** Keep the animation inside its parent instead of fixing it to the viewport. */
+  contained?: boolean;
 }
 
 /**
@@ -16,6 +18,7 @@ export function DyeWhorl({
   className = "",
   speed = 0.75,
   interactive = true,
+  contained = false,
 }: DyeWhorlProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -269,7 +272,7 @@ export function DyeWhorl({
   return (
     <canvas
       ref={canvasRef}
-      className={`fixed inset-0 pointer-events-none z-0 w-full h-full opacity-60 dark:opacity-80 transition-opacity duration-1000 ${className}`}
+      className={`${contained ? "absolute" : "fixed"} inset-0 pointer-events-none z-0 h-full w-full opacity-60 transition-opacity duration-1000 dark:opacity-80 ${className}`}
     />
   );
 }
