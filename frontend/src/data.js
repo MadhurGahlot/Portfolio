@@ -7,41 +7,8 @@ export const PORTFOLIO_CATEGORIES = [
 ];
 
 export const PORTFOLIO_PROJECTS = [
-  {
+   {
     id: "1",
-    slug: "reflect-ai",
-    title: "REFLECT AI",
-    subtitle: "AI-Powered Personal Diary Workspace",
-    category: "AI/ML",
-    category_name: "Artificial Intelligence",
-    year: "2026",
-    client: "Open for All",
-    role: "Full-Stack Developer & AI Integration",
-    hero_image: "/Reflectai2.png",
-    cover_aspect: "wide",
-    github_url: "https://github.com/MadhurGahlot/reflectai",
-    live_url: " ",
-    description : [ "REFLECT AI is a secure, AI-powered personal journaling workspace designed to help users reflect ",
-         " understand their thoughts, and turn journal entries into meaningful insights. The application combines ",
-           " Google authentication, Cloud Firestore, Gemini AI ",
-          "  multi-turn conversations, AI-generated summaries ",
-         " and personalized reflection workflows in a private user-focused environment." ],
-
-    details: [
-            "Built a secure authenticated journaling workspace using Firebase Authentication and Google Sign-In.",
-        "Integrated Google Gemini through a server-side proxy to keep AI credentials protected from the client.",
-        "Implemented AI-generated journal summaries, key takeaways, deep reflection, brainstorming, and action-step assistance.",
-        "Used Cloud Firestore with owner-bound security rules to isolate each user's journals and conversations.",
-        "Added persistent multi-turn AI conversations so users can continue reflection threads with contextual follow-up questions.",
-        "Implemented journal history, search, tag filtering, Markdown export, deletion, profile management, and image upload.",
-        "Designed defense-in-depth protections against prompt injection, unauthorized data access, API key exposure, and unsafe tool execution.",
-        "Deployed the application using Google Cloud Run and Google Cloud Secret Manager."
-        ],
-    gallery: ["/Reflectai2.png", "/Reflectai1.png"],
-  },
-
-  {
-    id: "2",
     slug: "grade-book",
     title: "Grade Book",
     subtitle: "AI-Based Assignment Similarity, Handwritten OCR & Automated Grading",
@@ -75,9 +42,79 @@ export const PORTFOLIO_PROJECTS = [
       "/Gradebook/gd5.webp",
     ],
   },
-
+ 
+   {
+    id: "2",
+    slug: "cod-web-tournament",
+    title: "COD WEB TOURNAMENT",
+    subtitle: "CALL OF DUTY TOURNAMENT MANAGEMENT SYSTEM ",
+    category: "Backend",
+    category_name: "Backend Development",
+    year: "2026",
+    client: "College Project",
+    role: "BACKEND DEVELOPER AND DATABASE ENGINEER",
+    hero_image: "/cod/cod1.png",
+    cover_aspect: "wide",
+    github_url: "https://github.com/MadhurGahlot/COD",
+    live_url: "https://cod-ivory.vercel.app/",
+    description: [
+      "COD (Call of Duty) Tournament Management System is a ",
+    "full-stack web application designed to manage esports ",
+    "tournaments, teams, players, matches, and tournament results. ",
+    "It features a REST API backend built with Python and FastAPI, ",
+    "integrated with a PostgreSQL database for structured data ",
+    "management and reliable backend operations." ] ,
+    details: [
+          "Developed RESTful APIs using Python and FastAPI.",
+    "Designed and managed relational database operations using PostgreSQL and SQLAlchemy ORM.",
+    "Implemented JWT-based authentication and user management.",
+    "Developed backend modules for teams, players, tournaments, matches, and winners.",
+    "Implemented API routing, request validation, and structured data handling.",
+    "Integrated the React frontend with the FastAPI backend.",
+    "Deployed the frontend on Vercel and backend on Render.",
+    "Organized backend functionality using a modular router-based architecture."
+    ],
+    gallery: [ "/cod/cod1.png",
+      "/cod/cod2.png",
+        "/cod/cod3.png",
+    ],
+  },
+ 
   {
     id: "3",
+    slug: "reflect-ai",
+    title: "REFLECT AI",
+    subtitle: "AI-Powered Personal Diary Workspace",
+    category: "AI/ML",
+    category_name: "Artificial Intelligence",
+    year: "2026",
+    client: "Open for All",
+    role: "Full-Stack Developer & AI Integration",
+    hero_image: "/Reflectai2.png",
+    cover_aspect: "wide",
+    github_url: "https://github.com/MadhurGahlot/reflectai",
+    live_url: " ",
+    description : [ "REFLECT AI is a secure, AI-powered personal journaling workspace designed to help users reflect ",
+         " understand their thoughts, and turn journal entries into meaningful insights. The application combines ",
+           " Google authentication, Cloud Firestore, Gemini AI ",
+          "  multi-turn conversations, AI-generated summaries ",
+         " and personalized reflection workflows in a private user-focused environment." ],
+
+    details: [
+            "Built a secure authenticated journaling workspace using Firebase Authentication and Google Sign-In.",
+        "Integrated Google Gemini through a server-side proxy to keep AI credentials protected from the client.",
+        "Implemented AI-generated journal summaries, key takeaways, deep reflection, brainstorming, and action-step assistance.",
+        "Used Cloud Firestore with owner-bound security rules to isolate each user's journals and conversations.",
+        "Added persistent multi-turn AI conversations so users can continue reflection threads with contextual follow-up questions.",
+        "Implemented journal history, search, tag filtering, Markdown export, deletion, profile management, and image upload.",
+        "Designed defense-in-depth protections against prompt injection, unauthorized data access, API key exposure, and unsafe tool execution.",
+        "Deployed the application using Google Cloud Run and Google Cloud Secret Manager."
+        ],
+    gallery: ["/Reflectai2.png", "/Reflectai1.png"],
+  },
+
+  {
+    id: "4",
     slug: "eeye",
     title: "EEYE",
     subtitle: "Software-Based Radar",
